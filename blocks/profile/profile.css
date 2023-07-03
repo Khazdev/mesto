@@ -1,0 +1,10 @@
+.profile {
+    box-sizing: border-box;
+    padding-top: 36px;
+    display: grid;
+    grid-template-columns: 168px 1fr 150px;
+   
+    grid-template-areas:
+    "profile__avatar profile__info profile__add";
+    
+}
