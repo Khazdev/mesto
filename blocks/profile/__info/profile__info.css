@@ -1,5 +1,6 @@
 .profile__info {
     display: grid;
+    /* grid-template-columns: minmax(max-content, 300px) 18px; */
     grid-template-columns: max-content 18px;
     grid-template-rows: repeat(2, min-content);
     grid-template-areas:
@@ -8,4 +9,11 @@
     row-gap: 16px;
     column-gap: 18px;
     align-self: center;
+}
+
+
+@media screen and (max-width: 600px) {
+    .profile__info {
+        justify-self: center;
+    }
 }
