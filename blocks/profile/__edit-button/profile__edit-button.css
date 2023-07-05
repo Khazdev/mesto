@@ -2,3 +2,7 @@
     align-self: baseline;
     width: 24px;
 }
+
+.profile__edit-button:hover {
+    opacity: 60%;
+}
