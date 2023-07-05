@@ -1,0 +1,9 @@
+.elements__like-button {
+    align-self: center;
+    width: 22px;
+    height: 19px;
+}
+
+.elements__like-button:hover {
+    opacity: 60%;
+}

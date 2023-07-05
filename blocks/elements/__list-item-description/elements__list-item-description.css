@@ -1,0 +1,7 @@
+.elements__list-item-description {
+    display: flex;
+    justify-content: space-between;
+    max-width: 246px;
+    margin: 25px auto 31px;
+    position: relative;
+}
