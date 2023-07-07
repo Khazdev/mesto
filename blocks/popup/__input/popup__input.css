@@ -1,20 +1,11 @@
 .popup__input {
-    background: none;
-    border: none;
-    border-bottom: 1px solid;
-    box-shadow: none;
-    max-width: 358px;
-    width: 100%;
-    color: #000;
-    font-size: 14px;
-    padding-bottom: 13px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid;
+  box-shadow: none;
+  max-width: 358px;
+  width: 100%;
+  color: #000;
+  font-size: 14px;
+  padding-bottom: 13px;
 }
-
-@media screen and (max-width: 600px) {
-  .popup__input {
-    /* width: 232px; */
-  }
-}
-
-
-
