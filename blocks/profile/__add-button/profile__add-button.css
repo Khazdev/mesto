@@ -1,26 +1,25 @@
 .profile__add-button {
-    width: 150px;
-    height: 50px;
-    align-self: center;
-    border: 2px solid #fff;
+  width: 150px;
+  height: 50px;
+  align-self: center;
+  border: 2px solid #fff;
 }
 
-
 .profile__add-button:hover {
-    opacity: 80%;
+  opacity: 80%;
 }
 
 @media screen and (max-width: 990px) {
-    .profile__add-button {
-        grid-column: span 2;
-        justify-self: center;
-    }
+  .profile__add-button {
+    grid-column: span 2;
+    justify-self: center;
+  }
 }
 
 @media screen and (max-width: 600px) {
-    .profile__add-button {
-        grid-column: span 1;
-        width: 282px;
-        height: 50px;
-    }
+  .profile__add-button {
+    grid-column: span 1;
+    width: 282px;
+    height: 50px;
+  }
 }
