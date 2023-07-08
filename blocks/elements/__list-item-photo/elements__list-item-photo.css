@@ -1,0 +1,5 @@
+.elements__list-item-photo {
+  width: 282px;
+  display: block;
+  object-fit: cover;
+}
