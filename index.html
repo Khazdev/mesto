@@ -17,42 +17,53 @@
       <img class="profile__avatar" src="./images/avatar.jpg" alt="Фотография Жак-Ива Кусто">
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
-        <input type="image" src="./images/edit-button.svg" class="profile__edit-button">
+        <input type="image" src="./images/edit-button.svg" class="profile__edit-button"
+          alt="кнопка редакировавния профиля">
         <p class="profile__bio">Исследователь океана</p>
       </div>
-      <input type="image" src="./images/add-button.svg" class="profile__add-button">
+      <input type="image" src="./images/add-button.svg" class="profile__add-button" alt="кнопка добавления фото места">
     </section>
     <section class="elements">
       <ul class="elements__list">
-        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/1.jpg" alt="">
+        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/1.jpg"
+            alt="фото сентинского храма в теберде ">
           <div class="elements__list-item-description">
             <h2 class="elements__list-item-header">Карачевск</h2>
-            <input type="image" src="./images/Group-min.svg" class="elements__like-button">
+            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+          </div>
         </li>
-        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/2.jpg" alt="">
+        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/2.jpg"
+            alt="Фоты горы Эльбрус издалека">
           <div class="elements__list-item-description">
-            <h2 class="elements__list-item-header">Карачевск</h2>
-            <input type="image" src="./images/Group.svg" class="elements__like-button">
+            <h2 class="elements__list-item-header">Гора Эльбрус</h2>
+            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+          </div>
         </li>
-        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/3.jpg" alt="">
+        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/3.jpg" alt="фото Домбай">
           <div class="elements__list-item-description">
-            <h2 class="elements__list-item-header">Карачевск</h2>
-            <input type="image" src="./images/Group.svg" class="elements__like-button">
+            <h2 class="elements__list-item-header">Домбай</h2>
+            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+          </div>
         </li>
-        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/2.jpg" alt="">
+        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/2.jpg"
+            alt="Фоты горы Эльбрус издалека">
           <div class="elements__list-item-description">
-            <h2 class="elements__list-item-header">Карачевск</h2>
-            <input type="image" src="./images/Group.svg" class="elements__like-button">
+            <h2 class="elements__list-item-header">Гора Эльбрус</h2>
+            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+          </div>
         </li>
-        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/3.jpg" alt="">
+        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/3.jpg" alt="фото Домбай">
           <div class="elements__list-item-description">
-            <h2 class="elements__list-item-header">КарачевскКарачевскКарачевскКарачевск</h2>
-            <input type="image" src="./images/Group.svg" class="elements__like-button">
+            <h2 class="elements__list-item-header">Домбай</h2>
+            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+          </div>
         </li>
-        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/1.jpg" alt="">
+        <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/1.jpg"
+            alt="фото сентинского храма в теберде">
           <div class="elements__list-item-description">
-            <h2 class="elements__list-item-header">Карачевск</h2>
-            <input type="image" src="./images/Group.svg" class="elements__like-button">
+            <h2 class="elements__list-item-header">Карачаево-Чего-то-там-длинное</h2>
+            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+          </div>
         </li>
       </ul>
     </section>
@@ -65,13 +76,15 @@
     <div class="popup__container">
       <img src="./images/close-button.svg" alt="" class="popup__close">
       <h2 class="popup__title">Редактировать профиль</h2>
-      <div class="popup__inputs">
-        <input class="popup__input popup__name" type="text" value="">
-        <input class="popup__input popup__bio" type="text" value="">
-      </div>
+      <form class="popup__inputs">
+        <input class="popup__input popup__name" type="text" placeholder="Введите Ваше ФИО">
+        <input class="popup__input popup__bio" type="text" placeholder="Введите Ваше Хобби">
+      </form>
       <button class="popup__save-button">Сохранить</button>
     </div>
   </section>
+  <script src="./scripts/index.js"></script>
 </body>
-<script src="./scripts/index.js"></script>
+
+
 </html>
