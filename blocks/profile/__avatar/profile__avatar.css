@@ -4,6 +4,8 @@
   justify-self: start;
   display: block;
   object-fit: cover;
+  width: 120px;
+  height: 120px;
 }
 
 @media screen and (max-width: 600px) {
