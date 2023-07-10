@@ -5,6 +5,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  line-height: normal;
 }
 
 @media screen and (max-width: 600px) {

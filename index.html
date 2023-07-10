@@ -17,11 +17,10 @@
       <img class="profile__avatar" src="./images/avatar.jpg" alt="Фотография Жак-Ива Кусто">
       <div class="profile__info">
         <h1 class="profile__name">Жак-Ив Кусто</h1>
-        <input type="image" src="./images/edit-button.svg" class="profile__edit-button"
-          alt="кнопка редакировавния профиля">
+        <button class="profile__edit-button" type="button"></button>
         <p class="profile__bio">Исследователь океана</p>
       </div>
-      <input type="image" src="./images/add-button.svg" class="profile__add-button" alt="кнопка добавления фото места">
+      <button class="profile__add-button" type="button"></button>
     </section>
     <section class="elements">
       <ul class="elements__list">
@@ -29,62 +28,64 @@
             alt="фото сентинского храма в теберде ">
           <div class="elements__list-item-description">
             <h2 class="elements__list-item-header">Карачевск</h2>
-            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+            <button class="elements__like-button" type="button"></button>
           </div>
         </li>
         <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/2.jpg"
             alt="Фоты горы Эльбрус издалека">
           <div class="elements__list-item-description">
             <h2 class="elements__list-item-header">Гора Эльбрус</h2>
-            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+            <button class="elements__like-button" type="button"></button>
           </div>
         </li>
         <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/3.jpg" alt="фото Домбай">
           <div class="elements__list-item-description">
             <h2 class="elements__list-item-header">Домбай</h2>
-            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+            <button class="elements__like-button" type="button"></button>
           </div>
         </li>
         <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/2.jpg"
             alt="Фоты горы Эльбрус издалека">
           <div class="elements__list-item-description">
             <h2 class="elements__list-item-header">Гора Эльбрус</h2>
-            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+            <button class="elements__like-button" type="button"></button>
           </div>
         </li>
         <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/3.jpg" alt="фото Домбай">
           <div class="elements__list-item-description">
             <h2 class="elements__list-item-header">Домбай</h2>
-            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+            <button class="elements__like-button" type="button"></button>
           </div>
         </li>
         <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/1.jpg"
             alt="фото сентинского храма в теберде">
           <div class="elements__list-item-description">
             <h2 class="elements__list-item-header">Карачаево-Чего-то-там-длинное</h2>
-            <input type="image" src="./images/Group-min.svg" class="elements__like-button" alt="кнопка сердечка лайк">
+            <button class="elements__like-button" type="button"></button>
           </div>
         </li>
       </ul>
     </section>
   </main>
+
   <footer class="footer">
     <p class="footer__copyright" lang="en">&COPY; 2023 Mesto Russia</p>
   </footer>
 
   <section class="popup">
     <div class="popup__container">
-      <img src="./images/close-button.svg" alt="" class="popup__close">
+      <button class="popup__close" type="reset"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form class="popup__inputs">
-        <input class="popup__input popup__name" type="text" placeholder="Введите Ваше ФИО">
-        <input class="popup__input popup__bio" type="text" placeholder="Введите Ваше Хобби">
+      <form name="popup__form" method="get">
+        <div class="popup__inputs">
+          <input class="popup__input popup__input_name" type="text" placeholder="Введите Ваше ФИО" name="profileName">
+          <input class="popup__input popup__input_bio" type="text" placeholder="Введите Ваше Хобби" name="profileBio">
+        </div>
+        <button class="popup__save-button" type="submit">Сохранить</button>
       </form>
-      <button class="popup__save-button">Сохранить</button>
     </div>
   </section>
   <script src="./scripts/index.js"></script>
 </body>
-
 
 </html>

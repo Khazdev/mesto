@@ -1,10 +1,9 @@
 .profile {
   box-sizing: border-box;
-  padding-top: 36px;
+  padding-top: 40px;
   display: grid;
   grid-template-columns: 120px 1fr 150px;
   column-gap: 30px;
-
 }
 
 @media screen and (max-width: 990px) {
