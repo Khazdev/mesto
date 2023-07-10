@@ -1,6 +1,5 @@
 .elements__list-item {
   background-color: #fff;
-  max-height: 361px;
-  border-radius: 2%;
+  border-radius: 10px;
   overflow: hidden;
 }

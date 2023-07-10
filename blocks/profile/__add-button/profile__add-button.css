@@ -4,6 +4,11 @@
   align-self: center;
   border: 2px solid #fff;
   box-sizing: border-box;
+  border-radius: 2px;
+  background-image: url('../../../images/add-button.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: transparent;
 }
 
 .profile__add-button:hover {
@@ -21,6 +26,5 @@
   .profile__add-button {
     grid-column: span 1;
     width: 282px;
-    height: 50px;
   }
 }
