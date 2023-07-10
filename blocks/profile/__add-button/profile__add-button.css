@@ -26,5 +26,7 @@
   .profile__add-button {
     grid-column: span 1;
     width: 282px;
+    background-size: 120px;
+    background-position: center;
   }
 }
