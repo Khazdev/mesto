@@ -1,4 +1,5 @@
 .footer {
   margin-top: 67px;
   margin-bottom: 60px;
+  flex-shrink: 0;
 }
