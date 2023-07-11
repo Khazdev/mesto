@@ -8,12 +8,18 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  max-width: 380px;
+  place-self: center;
 }
 
 @media screen and (max-width: 600px) {
   .profile__name {
-    text-align: center;
     font-size: 27px;
     line-height: normal;
+    align-self: baseline;
+    font-style: normal;
+    font-weight: 500;
+    max-width: 189px;
+    grid-column-start: 2;
   }
 }

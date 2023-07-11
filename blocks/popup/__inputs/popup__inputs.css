@@ -2,9 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
-  margin-top: 54px;
+  margin-top: 49px;
   margin-bottom: 48px;
-
 }
 
 @media screen and (max-width: 600px) {
