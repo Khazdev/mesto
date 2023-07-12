@@ -24,6 +24,7 @@
     </section>
     <section class="elements">
       <ul class="elements__list">
+        <!-- код отформатирован Shift + Option + F-->
         <li class="elements__list-item"><img class="elements__list-item-photo" src="./images/1.jpg"
             alt="фото сентинского храма в теберде ">
           <div class="elements__list-item-description">
@@ -75,11 +76,12 @@
   <section class="popup">
     <div class="popup__container">
       <button class="popup__close" type="reset" aria-label="кнопка закрыть попап"></button>
+      <button class="popup__close" type="button" aria-label="кнопка закрыть попап"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form name="popup__form" method="get">
+      <form class="popup__form" name="popup__form" method="get">
         <div class="popup__inputs">
-          <input class="popup__input popup__input_name" type="text" placeholder="Введите Ваше ФИО" name="profileName">
-          <input class="popup__input popup__input_bio" type="text" placeholder="Введите Ваше Хобби" name="profileBio">
+          <input class="popup__input popup__input_text_name" type="text" placeholder="Введите Ваше ФИО" name="profileName">
+          <input class="popup__input popup__input_text_bio" type="text" placeholder="Введите Ваше Хобби" name="profileBio">
         </div>
         <button class="popup__save-button" type="submit">Сохранить</button>
       </form>

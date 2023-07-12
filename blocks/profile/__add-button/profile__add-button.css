@@ -8,9 +8,10 @@
   border-radius: 2px;
   background-image: url('../../../images/add-button.svg');
   background-repeat: no-repeat;
-  background-size: cover;
   background-color: transparent;
   cursor: pointer;
+  background-position: center;
+  background-size: 16px;
 }
 
 .profile__add-button:hover {
@@ -27,8 +28,6 @@
 @media screen and (max-width: 600px) {
   .profile__add-button {
     grid-column: span 1;
-    width: 282px;
-    background-size: 120px;
-    background-position: center;
+    width: 282px
   }
 }
