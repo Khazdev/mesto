@@ -4,20 +4,27 @@ const profileName = document.querySelector(".profile__name");
 const profileBio = document.querySelector(".profile__bio");
 const elementsList = document.querySelector(".elements__list");
 
-const popupEditProfile = document.querySelector(".popup_edit-profile");
+const popupEditProfile = document.querySelector(".popup_type_edit-profile");
 const popupEditProfileCloseButton =
   popupEditProfile.querySelector(".popup__close");
 const popupEditProfileForm = popupEditProfile.querySelector(".popup__form");
 const popupEditProfileName = popupEditProfileForm.querySelector(
-  ".popup__input_text_name"
+  ".popup__input_type_name"
 );
 const popupEditProfileBio = popupEditProfileForm.querySelector(
-  ".popup__input_text_bio"
+  ".popup__input_type_bio"
 );
 
 const cardAddButton = document.querySelector(".profile__add-button");
-const popupAddCard = document.querySelector(".popup_add-card");
+const popupAddCard = document.querySelector(".popup_type_add-card");
 const popupAddCardCloseButton = popupAddCard.querySelector(".popup__close");
+const popupAddCardForm = popupAddCard.querySelector(".popup__form");
+const popupAddCardName = popupAddCard.querySelector(
+  ".popup__input_type_place-name"
+);
+const popupAddCardLink = popupAddCard.querySelector(
+  ".popup__input_type_place-image-link"
+);
 // Создать карточку
 const cardTemplate = document
   .querySelector("#template-element")
@@ -95,6 +102,13 @@ const saveEditProfileInputPopup = function (event) {
   editProfilePopupToggle();
 };
 
+const saveAddCardInputPopup = function (event) {
+  event.preventDefault();
+  const card = createCard(popupAddCardName.value, popupAddCardLink.value);
+  elementsList.prepend(card);
+  addCardPopupToggle();
+};
+
 const editProfile = function () {
   popupEditProfileName.value = profileName.textContent;
   popupEditProfileBio.value = profileBio.textContent;
@@ -119,3 +133,5 @@ popupEditProfileForm.addEventListener("submit", saveEditProfileInputPopup);
 cardAddButton.addEventListener("click", addCardPopupToggle);
 // Навесить слушатель на клик по крестику в попапе добавления карточки
 popupAddCardCloseButton.addEventListener("click", addCardPopupToggle);
+
+popupAddCardForm.addEventListener("submit", saveAddCardInputPopup);

@@ -61,7 +61,7 @@
       </li>
     </template>
 
-    <section class="popup popup_edit-profile">
+    <section class="popup popup_type_edit-profile">
       <div class="popup__container">
         <button
           class="popup__close"
@@ -69,16 +69,16 @@
           aria-label="кнопка закрыть попап"
         ></button>
         <h2 class="popup__title">Редактировать профиль</h2>
-        <form class="popup__form" name="popup__form" method="get">
+        <form class="popup__form popup__form_type_edit-profile" name="popup__form_type_edit-profile" method="get">
           <div class="popup__inputs">
             <input
-              class="popup__input popup__input_text_name"
+              class="popup__input popup__input_type_name"
               type="text"
               placeholder="Введите Ваше ФИО"
               name="profileName"
             />
             <input
-              class="popup__input popup__input_text_bio"
+              class="popup__input popup__input_type_bio"
               type="text"
               placeholder="Введите Ваше Хобби"
               name="profileBio"
@@ -88,7 +88,7 @@
         </form>
       </div>
     </section>
-    <section class="popup popup_add-card">
+    <section class="popup popup_type_add-card">
       <div class="popup__container">
         <button
           class="popup__close"
@@ -96,16 +96,16 @@
           aria-label="кнопка закрыть попап"
         ></button>
         <h2 class="popup__title">Новое место</h2>
-        <form class="popup__form" name="popup__form" method="get">
+        <form class="popup__form popup__form_add-card" name="popup__form_add-card" method="get">
           <div class="popup__inputs">
             <input
-              class="popup__input popup__input_text_place"
+              class="popup__input popup__input_type_place-name"
               type="text"
               placeholder="Название"
               name="cardPlaceName"
             />
             <input
-              class="popup__input popup__input_text_link"
+              class="popup__input popup__input_type_place-image-link"
               type="text"
               placeholder="Ссылка на картинку"
               name="cardImageLink"
