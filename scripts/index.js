@@ -64,10 +64,12 @@ const initialCards = [
 ];
 
 const getImageFromCard = (event) => {
-  image.src = event.srcElement.src;
-  imageLabel.textContent = event.srcElement
-    .closest(".elements__list-item")
-    .querySelector(".elements__list-item-header").textContent;
+  const card = event.srcElement.closest(".elements__list-item");
+  const cardImage = card.querySelector(".elements__list-item-photo");
+  image.src = cardImage.src;
+  imageLabel.textContent = card.querySelector(
+    ".elements__list-item-header"
+  ).textContent;
   imagePopupToggle(event);
 };
 
@@ -77,6 +79,7 @@ const imagePopupToggle = (event) => {
 
 function createCard(name, link) {
   const card = cardTemplate.cloneNode(true);
+  const cardPhotoContainer = card.querySelector(".elements__photo-container");
   const cardPhoto = card.querySelector(".elements__list-item-photo");
   const cardHeader = card.querySelector(".elements__list-item-header");
   const likeButton = card.querySelector(".elements__like-button");
@@ -86,7 +89,7 @@ function createCard(name, link) {
   cardPhoto.alt = `Фотография ${name}`;
   cardHeader.textContent = name;
 
-  cardPhoto.addEventListener("click", getImageFromCard);
+  cardPhotoContainer.addEventListener("click", getImageFromCard);
   likeButton.addEventListener("click", likeToggle);
   deleteButton.addEventListener("click", deleteCard);
 
