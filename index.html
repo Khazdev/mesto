@@ -42,7 +42,95 @@
       <p class="footer__copyright" lang="en">&COPY; 2023 Mesto Russia</p>
     </footer>
 
-    <template id="template-element">
+    <section class="popup popup_type_edit-profile">
+      <div class="popup__container">
+        <button
+          class="popup__close"
+          type="button"
+          aria-label="кнопка закрыть попап"
+        ></button>
+        <h2 class="popup__title">Редактировать профиль</h2>
+        <form
+          class="popup__form popup__form_type_edit-profile"
+          name="popup__form_type_edit-profile"
+          method="get"
+        >
+          <div class="popup__inputs">
+            <input
+              class="popup__input popup__input_type_name"
+              type="text"
+              placeholder="Введите Ваше ФИО"
+              name="profileName"
+            />
+            <input
+              class="popup__input popup__input_type_bio"
+              type="text"
+              placeholder="Введите Ваше Хобби"
+              name="profileBio"
+            />
+          </div>
+          <button
+            class="popup__save-button popup__save-button_edit-profile"
+            type="submit"
+          >
+            Сохранить
+          </button>
+        </form>
+      </div>
+    </section>
+    <section class="popup popup_type_add-card">
+      <div class="popup__container">
+        <button
+          class="popup__close"
+          type="button"
+          aria-label="кнопка закрыть попап"
+        ></button>
+        <h2 class="popup__title">Новое место</h2>
+        <form
+          class="popup__form popup__form_add-card"
+          name="popup__form_add-card"
+          method="get"
+        >
+          <div class="popup__inputs">
+            <input
+              class="popup__input popup__input_type_place-name"
+              type="text"
+              placeholder="Название"
+              name="cardPlaceName"
+            />
+            <input
+              class="popup__input popup__input_type_place-image-link"
+              type="text"
+              placeholder="Ссылка на картинку"
+              name="cardImageLink"
+            />
+          </div>
+          <button
+            class="popup__save-button popup__save-button_add-card"
+            type="submit"
+          >
+            Создать
+          </button>
+        </form>
+      </div>
+    </section>
+    <section class="popup popup_type_image">
+      <figure class="popup__image-container">
+        <button
+          class="popup__close"
+          type="button"
+          aria-label="кнопка закрыть попап"
+        ></button>
+        <img
+          class="popup__image"
+          src=""
+          alt=""
+        />
+        <figcaption class="popup__image-label">123123</figcaption>
+      </figure>
+    </section>
+
+    <template class="template-element">
       <li class="elements__list-item">
         <img class="elements__list-item-photo" src="" alt="" />
         <div class="elements__list-item-description">
@@ -61,60 +149,6 @@
       </li>
     </template>
 
-    <section class="popup popup_type_edit-profile">
-      <div class="popup__container">
-        <button
-          class="popup__close"
-          type="button"
-          aria-label="кнопка закрыть попап"
-        ></button>
-        <h2 class="popup__title">Редактировать профиль</h2>
-        <form class="popup__form popup__form_type_edit-profile" name="popup__form_type_edit-profile" method="get">
-          <div class="popup__inputs">
-            <input
-              class="popup__input popup__input_type_name"
-              type="text"
-              placeholder="Введите Ваше ФИО"
-              name="profileName"
-            />
-            <input
-              class="popup__input popup__input_type_bio"
-              type="text"
-              placeholder="Введите Ваше Хобби"
-              name="profileBio"
-            />
-          </div>
-          <button class="popup__save-button popup__save-button_edit-profile" type="submit">Сохранить</button>
-        </form>
-      </div>
-    </section>
-    <section class="popup popup_type_add-card">
-      <div class="popup__container">
-        <button
-          class="popup__close"
-          type="button"
-          aria-label="кнопка закрыть попап"
-        ></button>
-        <h2 class="popup__title">Новое место</h2>
-        <form class="popup__form popup__form_add-card" name="popup__form_add-card" method="get">
-          <div class="popup__inputs">
-            <input
-              class="popup__input popup__input_type_place-name"
-              type="text"
-              placeholder="Название"
-              name="cardPlaceName"
-            />
-            <input
-              class="popup__input popup__input_type_place-image-link"
-              type="text"
-              placeholder="Ссылка на картинку"
-              name="cardImageLink"
-            />
-          </div>
-          <button class="popup__save-button popup__save-button_add-card" type="submit">Сохранить</button>
-        </form>
-      </div>
-    </section>
     <script src="./scripts/index.js"></script>
   </body>
 </html>

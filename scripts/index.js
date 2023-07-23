@@ -25,9 +25,15 @@ const popupAddCardName = popupAddCard.querySelector(
 const popupAddCardLink = popupAddCard.querySelector(
   ".popup__input_type_place-image-link"
 );
+
+const popupImage = document.querySelector(".popup_type_image");
+const popupImageCloseButton = popupImage.querySelector(".popup__close");
+const image = popupImage.querySelector(".popup__image");
+const imageLabel = popupImage.querySelector(".popup__image-label");
+
 // Создать карточку
 const cardTemplate = document
-  .querySelector("#template-element")
+  .querySelector(".template-element")
   .content.querySelector(".elements__list-item");
 
 const initialCards = [
@@ -57,6 +63,18 @@ const initialCards = [
   },
 ];
 
+const getImageFromCard = (event) => {
+  image.src = event.srcElement.src;
+  imageLabel.textContent = event.srcElement
+    .closest(".elements__list-item")
+    .querySelector(".elements__list-item-header").textContent;
+  imagePopupToggle(event);
+};
+
+const imagePopupToggle = (event) => {
+  popupToggle(popupImage);
+};
+
 function createCard(name, link) {
   const card = cardTemplate.cloneNode(true);
   const cardPhoto = card.querySelector(".elements__list-item-photo");
@@ -68,6 +86,7 @@ function createCard(name, link) {
   cardPhoto.alt = `Фотография ${name}`;
   cardHeader.textContent = name;
 
+  cardPhoto.addEventListener("click", getImageFromCard);
   likeButton.addEventListener("click", likeToggle);
   deleteButton.addEventListener("click", deleteCard);
 
@@ -81,8 +100,6 @@ function initCards() {
   });
 }
 
-initCards();
-
 const editProfilePopupToggle = () => {
   popupToggle(popupEditProfile);
 };
@@ -91,7 +108,7 @@ const addCardPopupToggle = () => {
   popupToggle(popupAddCard);
 };
 
-const popupToggle = function (popup) {
+const popupToggle = (popup) => {
   popup.classList.toggle("popup_opened");
 };
 
@@ -123,15 +140,15 @@ function likeToggle(event) {
   event.srcElement.classList.toggle("elements__like-button_active");
 }
 
-// Навесить слушатель на клик по кнопке отредактировать
 profileEditButton.addEventListener("click", editProfile);
-// Навесить слушатель на клик по крестику
 popupEditProfileCloseButton.addEventListener("click", editProfilePopupToggle);
-// Навесить слушатель на submit формы
 popupEditProfileForm.addEventListener("submit", saveEditProfileInputPopup);
 
 cardAddButton.addEventListener("click", addCardPopupToggle);
-// Навесить слушатель на клик по крестику в попапе добавления карточки
 popupAddCardCloseButton.addEventListener("click", addCardPopupToggle);
-
 popupAddCardForm.addEventListener("submit", saveAddCardInputPopup);
+
+popupImageCloseButton.addEventListener("click", imagePopupToggle);
+
+// Initialize cards
+initCards();
