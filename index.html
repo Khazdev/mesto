@@ -61,7 +61,7 @@
       </li>
     </template>
 
-    <section class="popup">
+    <section class="popup popup_edit-profile">
       <div class="popup__container">
         <button
           class="popup__close"
@@ -84,7 +84,34 @@
               name="profileBio"
             />
           </div>
-          <button class="popup__save-button" type="submit">Сохранить</button>
+          <button class="popup__save-button popup__save-button_edit-profile" type="submit">Сохранить</button>
+        </form>
+      </div>
+    </section>
+    <section class="popup popup_add-card">
+      <div class="popup__container">
+        <button
+          class="popup__close"
+          type="button"
+          aria-label="кнопка закрыть попап"
+        ></button>
+        <h2 class="popup__title">Новое место</h2>
+        <form class="popup__form" name="popup__form" method="get">
+          <div class="popup__inputs">
+            <input
+              class="popup__input popup__input_text_place"
+              type="text"
+              placeholder="Название"
+              name="cardPlaceName"
+            />
+            <input
+              class="popup__input popup__input_text_link"
+              type="text"
+              placeholder="Ссылка на картинку"
+              name="cardImageLink"
+            />
+          </div>
+          <button class="popup__save-button popup__save-button_add-card" type="submit">Сохранить</button>
         </form>
       </div>
     </section>

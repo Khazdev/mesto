@@ -3,12 +3,21 @@ const profileEditButton = document.querySelector(".profile__edit-button");
 const profileName = document.querySelector(".profile__name");
 const profileBio = document.querySelector(".profile__bio");
 const elementsList = document.querySelector(".elements__list");
-const popup = document.querySelector(".popup");
-const popupCloseButton = popup.querySelector(".popup__close");
-const popupForm = popup.querySelector(".popup__form");
-const popupProfileName = popupForm.querySelector(".popup__input_text_name");
-const popupProfileBio = popupForm.querySelector(".popup__input_text_bio");
 
+const popupEditProfile = document.querySelector(".popup_edit-profile");
+const popupEditProfileCloseButton =
+  popupEditProfile.querySelector(".popup__close");
+const popupEditProfileForm = popupEditProfile.querySelector(".popup__form");
+const popupEditProfileName = popupEditProfileForm.querySelector(
+  ".popup__input_text_name"
+);
+const popupEditProfileBio = popupEditProfileForm.querySelector(
+  ".popup__input_text_bio"
+);
+
+const cardAddButton = document.querySelector(".profile__add-button");
+const popupAddCard = document.querySelector(".popup_add-card");
+const popupAddCardCloseButton = popupAddCard.querySelector(".popup__close");
 // Создать карточку
 const cardTemplate = document
   .querySelector("#template-element")
@@ -67,21 +76,29 @@ function initCards() {
 
 initCards();
 
-const popupToggle = function () {
+const editProfilePopupToggle = () => {
+  popupToggle(popupEditProfile);
+};
+
+const addCardPopupToggle = () => {
+  popupToggle(popupAddCard);
+};
+
+const popupToggle = function (popup) {
   popup.classList.toggle("popup_opened");
 };
 
-const saveInputPopup = function (event) {
+const saveEditProfileInputPopup = function (event) {
   event.preventDefault();
-  profileName.textContent = popupProfileName.value;
-  profileBio.textContent = popupProfileBio.value;
-  popupToggle();
+  profileName.textContent = popupEditProfileName.value;
+  profileBio.textContent = popupEditProfileBio.value;
+  editProfilePopupToggle();
 };
 
 const editProfile = function () {
-  popupProfileName.value = profileName.textContent;
-  popupProfileBio.value = profileBio.textContent;
-  popupToggle();
+  popupEditProfileName.value = profileName.textContent;
+  popupEditProfileBio.value = profileBio.textContent;
+  editProfilePopupToggle();
 };
 
 function deleteCard(event) {
@@ -95,8 +112,10 @@ function likeToggle(event) {
 // Навесить слушатель на клик по кнопке отредактировать
 profileEditButton.addEventListener("click", editProfile);
 // Навесить слушатель на клик по крестику
-popupCloseButton.addEventListener("click", popupToggle);
+popupEditProfileCloseButton.addEventListener("click", editProfilePopupToggle);
 // Навесить слушатель на submit формы
-popupForm.addEventListener("submit", saveInputPopup);
+popupEditProfileForm.addEventListener("submit", saveEditProfileInputPopup);
 
-
+cardAddButton.addEventListener("click", addCardPopupToggle);
+// Навесить слушатель на клик по крестику в попапе добавления карточки
+popupAddCardCloseButton.addEventListener("click", addCardPopupToggle);
