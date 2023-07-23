@@ -121,18 +121,17 @@
           type="button"
           aria-label="кнопка закрыть попап"
         ></button>
-        <img
-          class="popup__image"
-          src=""
-          alt=""
-        />
+        <img class="popup__image" src="" alt="" />
         <figcaption class="popup__image-label">123123</figcaption>
       </figure>
     </section>
 
     <template class="template-element">
       <li class="elements__list-item">
-        <img class="elements__list-item-photo" src="" alt="" />
+        <div class="elements__photo-container">
+          <img class="elements__list-item-photo" src="" alt="" />
+          <div class="elements__list-item-overlay"></div>
+        </div>
         <div class="elements__list-item-description">
           <h2 class="elements__list-item-header"></h2>
           <button
