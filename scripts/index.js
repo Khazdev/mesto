@@ -113,10 +113,14 @@ const addCardPopupToggle = () => {
 
 const openPopup = (popup) => {
   popup.classList.add("popup_opened");
+  popup.addEventListener("click", closePopupByClickingOnOverlay);
+  document.addEventListener("keydown", closePopupByClickingOnEsc);
 };
 
 const closePopup = (popup) => {
   popup.classList.remove("popup_opened");
+  popup.removeEventListener("click", closePopupByClickingOnOverlay);
+  document.removeEventListener("keydown", closePopupByClickingOnEsc);
 };
 
 const saveEditProfileInputPopup = (event) => {
@@ -146,6 +150,20 @@ const deleteCard = (event) => {
 
 const likeToggle = (event) => {
   event.srcElement.classList.toggle("elements__like-button_active");
+};
+
+const closePopupByClickingOnOverlay = (event) => {
+  if (event.target == event.currentTarget) {
+    const popup = event.srcElement.closest(".popup_opened");
+    closePopup(popup);
+  }
+};
+
+const closePopupByClickingOnEsc = (event) => {
+  if (event.key === "Escape") {
+    const popup = document.querySelector(".popup_opened");
+    closePopup(popup);
+  }
 };
 
 profileEditButton.addEventListener("click", editProfile);
