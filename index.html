@@ -52,7 +52,7 @@
         <h2 class="popup__title">Редактировать профиль</h2>
         <form
           class="popup__form popup__form_type_edit-profile"
-          name="popup__form_type_edit-profile"
+          name="edit-profile"
           method="get"
         >
           <div class="popup__inputs">
@@ -60,14 +60,23 @@
               class="popup__input popup__input_type_name"
               type="text"
               placeholder="Введите Ваше ФИО"
-              name="profileName"
+              name="profile-name"
+              id="profile-name"
+              required
+              minlength="2"
+              maxlength="40"
             />
+            <span id='profile-name-error' class='error'></span>
             <input
               class="popup__input popup__input_type_bio"
               type="text"
               placeholder="Введите Ваше Хобби"
-              name="profileBio"
+              id="profile-bio"
+              required
+              minlength="2"
+              maxlength="200"
             />
+            <span id='profile-bio-error' class='error'></span>
           </div>
           <button
             class="popup__save-button popup__save-button_edit-profile"
@@ -88,7 +97,7 @@
         <h2 class="popup__title">Новое место</h2>
         <form
           class="popup__form popup__form_add-card"
-          name="popup__form_add-card"
+          name="add-card"
           method="get"
         >
           <div class="popup__inputs">
@@ -96,14 +105,24 @@
               class="popup__input popup__input_type_place-name"
               type="text"
               placeholder="Название"
-              name="cardPlaceName"
+              name="card-place-name"
+              id="card-place-name"
+              required
+              minlength="2"
+              maxlength="40"
             />
+            <span id='card-place-name-error' class='error'></span>
             <input
               class="popup__input popup__input_type_place-image-link"
-              type="text"
+              type="url"
               placeholder="Ссылка на картинку"
-              name="cardImageLink"
+              name="card-image-link"
+              id="card-image-link"
+              required
+              minlength="2"
+              maxlength="200"
             />
+            <span id='card-image-link-error' class='error'></span>
           </div>
           <button
             class="popup__save-button popup__save-button_add-card"
