@@ -39,6 +39,8 @@ closeButtons.forEach((button) => {
   button.addEventListener("click", () => closePopup(popup));
 });
 
+const forms = document.querySelectorAll(".popup__form");
+
 const initialCards = [
   {
     name: "Архыз",
@@ -103,14 +105,6 @@ const initCards = () => {
   });
 };
 
-const editProfilePopupToggle = () => {
-  togglePopup(popupEditProfile);
-};
-
-const addCardPopupToggle = () => {
-  togglePopup(popupAddCard);
-};
-
 const openPopup = (popup) => {
   popup.classList.add("popup_opened");
   popup.addEventListener("click", closePopupByClickingOnOverlay);
@@ -165,6 +159,20 @@ const closePopupByClickingOnEsc = (event) => {
     closePopup(popup);
   }
 };
+
+const validateInput = (event) => {
+  console.log(`${event.target}`);
+  const errorElement = document.querySelector(`#${event.target.id}-error`);
+  if (event.target.checkValidity()) {
+    errorElement.textContent = "";
+  } else {
+    errorElement.textContent = event.target.validationMessage;
+  }
+};
+
+forms.forEach((form) => {
+  form.addEventListener("input", validateInput);
+});
 
 profileEditButton.addEventListener("click", editProfile);
 popupEditProfileForm.addEventListener("submit", saveEditProfileInputPopup);
