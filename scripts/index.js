@@ -1,5 +1,14 @@
 import { enableValidation } from "./validate.js";
 
+const settings = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__save-button",
+  inactiveButtonClass: "popup__save-button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
+
 // Получить элементы
 const profileEditButton = document.querySelector(".profile__edit-button");
 const profileName = document.querySelector(".profile__name");
@@ -109,6 +118,7 @@ const openPopup = (popup) => {
   popup.classList.add("popup_opened");
   popup.addEventListener("click", closePopupByClickingOnOverlay);
   document.addEventListener("keydown", closePopupByClickingOnEsc);
+  enableValidation(settings);
 };
 
 const closePopup = (popup) => {
@@ -169,11 +179,4 @@ popupAddCardForm.addEventListener("submit", saveAddCardInputPopup);
 // Initialize cards
 initCards();
 
-enableValidation({
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__save-button",
-  inactiveButtonClass: "popup__save-button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
-});
+enableValidation(settings);

@@ -41,6 +41,7 @@ function toggleButtonState(inputList, buttonElement, settings) {
 }
 
 function checkInputValidity(formElement, inputElement, settings) {
+
   const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
   if (inputElement.validity.valid) {
     errorElement.textContent = "";
