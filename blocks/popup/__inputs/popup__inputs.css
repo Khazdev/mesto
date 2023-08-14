@@ -1,9 +1,7 @@
 .popup__inputs {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  margin-top: 49px;
-  margin-bottom: 48px;
+  gap: 15px;
 }
 
 @media screen and (max-width: 600px) {

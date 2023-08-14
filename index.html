@@ -1,174 +1,183 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./pages/index.css" />
-    <title>Mesto</title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./pages/index.css">
+  <title>Mesto</title>
+</head>
 
-  <body class="page">
-    <header class="header">
-      <img class="header__logo" src="./images/logo.svg" alt="логотип Место" />
-    </header>
-    <main class="content">
-      <section class="profile">
-        <img
-          class="profile__avatar"
-          src="./images/avatar.jpg"
-          alt="Фотография Жак-Ива Кусто"
-        />
-        <div class="profile__info">
-          <h1 class="profile__name">Жак-Ив Кусто</h1>
-          <button
-            class="profile__edit-button"
-            type="button"
-            aria-label="редактировать профиль"
-          ></button>
-          <p class="profile__bio">Исследователь океана</p>
-        </div>
-        <button
-          class="profile__add-button"
-          type="button"
-          aria-label="Добавить фото-карточку"
-        ></button>
-      </section>
-      <section class="elements">
-        <ul class="elements__list"></ul>
-      </section>
-    </main>
+<body class="page">
+<header class="header">
+  <img class="header__logo" src="./images/logo.svg" alt="логотип Место">
+</header>
+<main class="content">
+  <section class="profile">
+    <img
+      class="profile__avatar"
+      src="./images/avatar.jpg"
+      alt="Фотография Жак-Ива Кусто"
+    >
+    <div class="profile__info">
+      <h1 class="profile__name">Жак-Ив Кусто</h1>
+      <button
+        class="profile__edit-button"
+        type="button"
+        aria-label="редактировать профиль"
+      ></button>
+      <p class="profile__bio">Исследователь океана</p>
+    </div>
+    <button
+      class="profile__add-button"
+      type="button"
+      aria-label="Добавить фото-карточку"
+    ></button>
+  </section>
+  <section class="elements" aria-label="карточки">
+    <ul class="elements__list"></ul>
+  </section>
+</main>
 
-    <footer class="footer">
-      <p class="footer__copyright" lang="en">&COPY; 2023 Mesto Russia</p>
-    </footer>
+<footer class="footer">
+  <p class="footer__copyright" lang="en">&COPY; 2023 Mesto Russia</p>
+</footer>
 
-    <section class="popup popup_type_edit-profile">
-      <div class="popup__container">
-        <button
-          class="popup__close"
-          type="button"
-          aria-label="кнопка закрыть попап"
-        ></button>
-        <h2 class="popup__title">Редактировать профиль</h2>
-        <form
-          class="popup__form popup__form_type_edit-profile"
-          name="edit-profile"
-          method="get"
-        >
-          <div class="popup__inputs">
-            <input
-              class="popup__input popup__input_type_name"
-              type="text"
-              placeholder="Введите Ваше ФИО"
-              name="profile-name"
-              id="profile-name"
-              required
-              minlength="2"
-              maxlength="40"
-            />
-            <span id="profile-name-error" class="error"></span>
-            <input
-              class="popup__input popup__input_type_bio"
-              type="text"
-              placeholder="Введите Ваше Хобби"
-              id="profile-bio"
-              required
-              minlength="2"
-              maxlength="200"
-            />
-            <span id="profile-bio-error" class="error"></span>
-          </div>
-          <button
-            class="popup__save-button popup__save-button_edit-profile popup__save-button_disabled"
-            type="submit"
-            disabled
+<section class="popup popup_type_edit-profile">
+  <div class="popup__container">
+    <button
+      class="popup__close"
+      type="button"
+      aria-label="кнопка закрыть попап"
+    ></button>
+    <h2 class="popup__title">Редактировать профиль</h2>
+    <form
+      class="popup__form popup__form_type_edit-profile"
+      name="edit-profile"
+      method="get"
+    >
+      <div class="popup__inputs">
+        <div>
+          <input
+            class="popup__input popup__input_type_name"
+            type="text"
+            placeholder="Введите Ваше ФИО"
+            name="profile-name"
+            id="profile-name"
+            required
+            minlength="2"
+            maxlength="40"
           >
-            Сохранить
-          </button>
-        </form>
-      </div>
-    </section>
-    <section class="popup popup_type_add-card">
-      <div class="popup__container">
-        <button
-          class="popup__close"
-          type="button"
-          aria-label="кнопка закрыть попап"
-        ></button>
-        <h2 class="popup__title">Новое место</h2>
-        <form
-          class="popup__form popup__form_add-card"
-          name="add-card"
-          method="get"
-        >
-          <div class="popup__inputs">
-            <input
-              class="popup__input popup__input_type_place-name"
-              type="text"
-              placeholder="Название"
-              name="card-place-name"
-              id="card-place-name"
-              required
-              minlength="2"
-              maxlength="40"
-            />
-            <span id="card-place-name-error" class="error"></span>
-            <input
-              class="popup__input popup__input_type_place-image-link"
-              type="url"
-              placeholder="Ссылка на картинку"
-              name="card-image-link"
-              id="card-image-link"
-              required
-              minlength="2"
-              maxlength="200"
-            />
-            <span id="card-image-link-error" class="error"></span>
-          </div>
-          <button
-            class="popup__save-button popup__save-button_add-card popup__save-button_invalid"
-            type="submit"
-            disabled
+          <span id="profile-name-error" class="popup__error"></span>
+        </div>
+        <div>
+          <input
+            class="popup__input popup__input_type_bio"
+            type="text"
+            placeholder="Введите Ваше Хобби"
+            id="profile-bio"
+            required
+            minlength="2"
+            maxlength="200"
           >
-            Создать
-          </button>
-        </form>
+          <span id="profile-bio-error" class="popup__error"></span>
+        </div>
       </div>
-    </section>
-    <section class="popup popup_type_image">
-      <figure class="popup__image-container">
-        <button
-          class="popup__close"
-          type="button"
-          aria-label="кнопка закрыть попап"
-        ></button>
-        <img class="popup__image" src="#" alt="" />
-        <figcaption class="popup__image-label">123123</figcaption>
-      </figure>
-    </section>
-
-    <template class="template-element">
-      <li class="elements__list-item">
-        <div class="elements__photo-container">
-          <img class="elements__list-item-photo" src="#" alt="" />
-          <div class="elements__list-item-overlay"></div>
+      <button
+        class="popup__save-button popup__save-button_edit-profile popup__save-button_disabled"
+        type="submit"
+        disabled
+      >
+        Сохранить
+      </button>
+    </form>
+  </div>
+</section>
+<section class="popup popup_type_add-card">
+  <div class="popup__container">
+    <button
+      class="popup__close"
+      type="button"
+      aria-label="кнопка закрыть попап"
+    ></button>
+    <h2 class="popup__title">Новое место</h2>
+    <form
+      class="popup__form popup__form_add-card"
+      name="add-card"
+      method="get"
+    >
+      <div class="popup__inputs">
+        <div>
+          <input
+            class="popup__input popup__input_type_place-name"
+            type="text"
+            placeholder="Название"
+            name="card-place-name"
+            id="card-place-name"
+            required
+            minlength="2"
+            maxlength="40"
+          >
+          <span id="card-place-name-error" class="popup__error"></span>
         </div>
-        <div class="elements__list-item-description">
-          <h2 class="elements__list-item-header"></h2>
-          <button
-            class="elements__like-button"
-            type="button"
-            aria-label="сердечко-лайк"
-          ></button>
+        <div>
+          <input
+            class="popup__input popup__input_type_place-image-link"
+            type="url"
+            placeholder="Ссылка на картинку"
+            name="card-image-link"
+            id="card-image-link"
+            required
+            minlength="2"
+            maxlength="200"
+          >
+          <span id="card-image-link-error" class="popup__error"></span>
         </div>
-        <button
-          class="elements__del-button"
-          type="button"
-          aria-label="кнопка удаления карточки"
-        ></button>
-      </li>
-    </template>
+      </div>
+      <button
+        class="popup__save-button popup__save-button_add-card popup__save-button_invalid"
+        type="submit"
+        disabled
+      >
+        Создать
+      </button>
+    </form>
+  </div>
+</section>
+<section class="popup popup_type_image" aria-label="увеличенные картинки">
+  <figure class="popup__image-container">
+    <button
+      class="popup__close"
+      type="button"
+      aria-label="кнопка закрыть попап"
+    ></button>
+    <img class="popup__image" src="#" alt="">
+    <figcaption class="popup__image-label"></figcaption>
+  </figure>
+</section>
 
-    <script src="./scripts/index.js"></script>
-  </body>
+<template class="template-element">
+  <li class="elements__list-item">
+    <div class="elements__photo-container">
+      <img class="elements__list-item-photo" src="#" alt="">
+      <div class="elements__list-item-overlay"></div>
+    </div>
+    <div class="elements__list-item-description">
+      <h2 class="elements__list-item-header"></h2>
+      <button
+        class="elements__like-button"
+        type="button"
+        aria-label="сердечко-лайк"
+      ></button>
+    </div>
+    <button
+      class="elements__del-button"
+      type="button"
+      aria-label="кнопка удаления карточки"
+    ></button>
+  </li>
+</template>
+
+<script src="./scripts/validate.js" type="module"></script>
+<script src="./scripts/index.js" type="module"></script>
+</body>
 </html>

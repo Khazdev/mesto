@@ -10,3 +10,7 @@
   padding-bottom: 10px;
   line-height: normal;
 }
+
+.popup__input:focus-visible {
+  outline: none;
+}

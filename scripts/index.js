@@ -1,3 +1,5 @@
+import { enableValidation } from "./validate.js";
+
 // Получить элементы
 const profileEditButton = document.querySelector(".profile__edit-button");
 const profileName = document.querySelector(".profile__name");
@@ -39,8 +41,6 @@ closeButtons.forEach((button) => {
   button.addEventListener("click", () => closePopup(popup));
 });
 
-const forms = document.querySelectorAll(".popup__form");
-
 const initialCards = [
   {
     name: "Архыз",
@@ -69,7 +69,7 @@ const initialCards = [
 ];
 
 const getImageFromCard = (event) => {
-  const card = event.srcElement.closest(".elements__list-item");
+  const card = event.target.closest(".elements__list-item");
   const cardImage = card.querySelector(".elements__list-item-photo");
   image.src = cardImage.src;
   image.alt = cardImage.alt;
@@ -109,7 +109,6 @@ const openPopup = (popup) => {
   popup.classList.add("popup_opened");
   popup.addEventListener("click", closePopupByClickingOnOverlay);
   document.addEventListener("keydown", closePopupByClickingOnEsc);
-  validatePopupInputs(popup);
 };
 
 const closePopup = (popup) => {
@@ -122,9 +121,6 @@ const saveEditProfileInputPopup = (event) => {
   event.preventDefault();
   profileName.textContent = popupEditProfileName.value;
   profileBio.textContent = popupEditProfileBio.value;
-  console.log(event);
-  const inputs = Array.from(event.target.querySelectorAll(".popup__input"));
-  validatePopupInputs(popupEditProfile);
   closePopup(popupEditProfile);
 };
 
@@ -133,7 +129,6 @@ const saveAddCardInputPopup = (event) => {
   const card = createCard(popupAddCardName.value, popupAddCardLink.value);
   elementsList.prepend(card);
   event.target.reset();
-  validatePopupInputs(popupAddCard);
   closePopup(popupAddCard);
 };
 
@@ -144,16 +139,16 @@ const editProfile = () => {
 };
 
 const deleteCard = (event) => {
-  event.srcElement.closest(".elements__list-item").remove();
+  event.target.closest(".elements__list-item").remove();
 };
 
 const likeToggle = (event) => {
-  event.srcElement.classList.toggle("elements__like-button_active");
+  event.target.classList.toggle("elements__like-button_active");
 };
 
 const closePopupByClickingOnOverlay = (event) => {
-  if (event.target == event.currentTarget) {
-    const popup = event.srcElement.closest(".popup_opened");
+  if (event.target === event.currentTarget) {
+    const popup = event.target.closest(".popup_opened");
     closePopup(popup);
   }
 };
@@ -165,45 +160,6 @@ const closePopupByClickingOnEsc = (event) => {
   }
 };
 
-const validateGeneral = (event) => {
-  validateInput(event.target);
-};
-
-const validateInput = (input) => {
-  const errorElement = document.querySelector(`#${input.id}-error`);
-  if (input.checkValidity()) {
-    errorElement.textContent = "";
-  } else {
-    errorElement.textContent = input.validationMessage;
-  }
-  // дисейблить кнопку
-  const popupForm = input.closest(".popup__form");
-  const submitButton = popupForm.querySelector(".popup__save-button");
-  if (popupForm.checkValidity()) {
-    console.log(popupForm);
-
-    setSubmitButtonState(true, submitButton);
-  } else {
-    setSubmitButtonState(false, submitButton);
-  }
-};
-
-const setSubmitButtonState = (isActive, submitButton) => {
-  if (isActive) {
-    // submitButton.removeAttribute("disabled");
-    // submitButton.classList.add("popup__save-button_valid");
-    submitButton.classList.remove("popup__save-button_disabled");
-  } else {
-    // submitButton.setAttribute("disabled", true);
-    submitButton.classList.add("popup__save-button_disabled");
-    // submitButton.classList.remove("popup__save-button_valid");
-  }
-};
-
-forms.forEach((form) => {
-  form.addEventListener("input", validateGeneral);
-});
-
 profileEditButton.addEventListener("click", editProfile);
 popupEditProfileForm.addEventListener("submit", saveEditProfileInputPopup);
 
@@ -213,31 +169,11 @@ popupAddCardForm.addEventListener("submit", saveAddCardInputPopup);
 // Initialize cards
 initCards();
 
-function validatePopupInputs(popup) {
-  const inputs = Array.from(popup.querySelectorAll(".popup__input"));
-  inputs.forEach((input) => {
-    validateInput(input);
-  });
-  // дисейблить кнопку
-  const popupForm = popup.querySelector(".popup__form");
-  const submitButton = popupForm.querySelector(".popup__save-button");
-  console.log(submitButton);
-  if (popupForm.checkValidity()) {
-    console.log(popupForm);
-
-    setSubmitButtonState(true, submitButton);
-  } else {
-    setSubmitButtonState(false, submitButton);
-  }
-}
-
-function enableValidation(params) {}
-
 enableValidation({
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
   submitButtonSelector: ".popup__save-button",
-  inactiveButtonClass: "popup__button_disabled",
-  inputErrorClass: "popup__input_type_error", // ???
-  errorClass: "popup__error_visible", // ???
+  inactiveButtonClass: "popup__save-button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
 });
