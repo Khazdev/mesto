@@ -17,16 +17,21 @@ function setEventListeners(form, settings) {
 
   toggleButtonState(inputList, saveButton, settings);
 
+  form.addEventListener('reset', () => {
+    disableButton(saveButton, settings)
+  });
   inputList.forEach((input) => {
     input.addEventListener("input", () => {
       toggleButtonState(inputList, saveButton, settings);
       checkInputValidity(form, input, settings);
     });
-    // проверка на валидность на открытии попапа (если закрыли форму с невалидными полями)
-    checkInputValidity(form, input, settings);
   });
 }
 
+function disableButton(saveButton, settings) {
+  saveButton.classList.add(settings.inactiveButtonClass);
+  saveButton.disabled = true;
+}
 
 function toggleButtonState(inputList, buttonElement, settings) {
   const isFormValid = inputList.every((inputElement) => inputElement.validity.valid);
@@ -35,8 +40,7 @@ function toggleButtonState(inputList, buttonElement, settings) {
     buttonElement.classList.remove(settings.inactiveButtonClass);
     buttonElement.disabled = false;
   } else {
-    buttonElement.classList.add(settings.inactiveButtonClass);
-    buttonElement.disabled = true;
+    disableButton(buttonElement, settings);
   }
 }
 
@@ -55,4 +59,4 @@ function checkInputValidity(formElement, inputElement, settings) {
   return inputElement.validity.valid;
 }
 
-export { enableValidation };
+export {enableValidation};

@@ -1,4 +1,4 @@
-import { enableValidation } from "./validate.js";
+import {enableValidation} from "./validate.js";
 
 const settings = {
   formSelector: ".popup__form",
@@ -76,15 +76,10 @@ const initialCards = [
     link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
   },
 ];
-
-const getImageFromCard = (event) => {
-  const card = event.target.closest(".elements__list-item");
-  const cardImage = card.querySelector(".elements__list-item-photo");
-  image.src = cardImage.src;
-  image.alt = cardImage.alt;
-  imageLabel.textContent = card.querySelector(
-    ".elements__list-item-header"
-  ).textContent;
+const getImageFromCard = (name, link) => {
+  image.src = link;
+  image.alt = name;
+  imageLabel.textContent = name
   openPopup(popupImage);
 };
 
@@ -100,8 +95,8 @@ const createCard = (name, link) => {
   cardPhoto.alt = `Фотография ${name}`;
   cardHeader.textContent = name;
 
-  cardPhotoContainer.addEventListener("click", getImageFromCard);
-  likeButton.addEventListener("click", likeToggle);
+  cardPhotoContainer.addEventListener("click", () => getImageFromCard(name, link));
+  likeButton.addEventListener("click", toggleLike);
   deleteButton.addEventListener("click", deleteCard);
 
   return card;
@@ -118,7 +113,6 @@ const openPopup = (popup) => {
   popup.classList.add("popup_opened");
   popup.addEventListener("click", closePopupByClickingOnOverlay);
   document.addEventListener("keydown", closePopupByClickingOnEsc);
-  enableValidation(settings);
 };
 
 const closePopup = (popup) => {
@@ -152,14 +146,13 @@ const deleteCard = (event) => {
   event.target.closest(".elements__list-item").remove();
 };
 
-const likeToggle = (event) => {
+const toggleLike = (event) => {
   event.target.classList.toggle("elements__like-button_active");
 };
 
 const closePopupByClickingOnOverlay = (event) => {
   if (event.target === event.currentTarget) {
-    const popup = event.target.closest(".popup_opened");
-    closePopup(popup);
+    closePopup(event.target);
   }
 };
 
