@@ -1,4 +1,5 @@
 import {enableValidation} from "./validate.js";
+import {Card} from "./card.js";
 
 const settings = {
   formSelector: ".popup__form",
@@ -34,14 +35,9 @@ const popupAddCardLink = popupAddCard.querySelector(
   ".popup__input_type_place-image-link"
 );
 
-const popupImage = document.querySelector(".popup_type_image");
-const image = popupImage.querySelector(".popup__image");
-const imageLabel = popupImage.querySelector(".popup__image-label");
-
-// Создать карточку
-const cardTemplate = document
-  .querySelector(".template-element")
-  .content.querySelector(".elements__list-item");
+const popupCardView = document.querySelector(".popup_type_image");
+const image = popupCardView.querySelector(".popup__image");
+const imageLabel = popupCardView.querySelector(".popup__image-label");
 
 const closeButtons = document.querySelectorAll(".popup__close");
 
@@ -76,35 +72,24 @@ const initialCards = [
     link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
   },
 ];
-const getImageFromCard = (name, link) => {
-  image.src = link;
-  image.alt = name;
-  imageLabel.textContent = name
-  openPopup(popupImage);
+
+const getImageFromCard = (cardData) => {
+  image.src = cardData.link;
+  image.alt = cardData.title;
+  imageLabel.textContent = cardData.title
+  openPopup(popupCardView);
 };
 
-const createCard = (name, link) => {
-  const card = cardTemplate.cloneNode(true);
+const createCard = (cardData) => {
+  const card = new Card(cardData, ".template-element").generateCard();
   const cardPhotoContainer = card.querySelector(".elements__photo-container");
-  const cardPhoto = card.querySelector(".elements__list-item-photo");
-  const cardHeader = card.querySelector(".elements__list-item-header");
-  const likeButton = card.querySelector(".elements__like-button");
-  const deleteButton = card.querySelector(".elements__del-button");
-
-  cardPhoto.src = link;
-  cardPhoto.alt = `Фотография ${name}`;
-  cardHeader.textContent = name;
-
-  cardPhotoContainer.addEventListener("click", () => getImageFromCard(name, link));
-  likeButton.addEventListener("click", toggleLike);
-  deleteButton.addEventListener("click", deleteCard);
-
+  cardPhotoContainer.addEventListener("click", () => getImageFromCard(cardData));
   return card;
 };
 
 const initCards = () => {
   initialCards.forEach((cardData) => {
-    const card = createCard(cardData.name, cardData.link);
+    const card = createCard({title: cardData.name, link: cardData.link});
     elementsList.appendChild(card);
   });
 };
@@ -130,7 +115,7 @@ const saveEditProfileInputPopup = (event) => {
 
 const saveAddCardInputPopup = (event) => {
   event.preventDefault();
-  const card = createCard(popupAddCardName.value, popupAddCardLink.value);
+  const card = createCard({title: popupAddCardName.value, link: popupAddCardLink.value});
   elementsList.prepend(card);
   event.target.reset();
   closePopup(popupAddCard);
@@ -140,14 +125,6 @@ const editProfile = () => {
   popupEditProfileName.value = profileName.textContent;
   popupEditProfileBio.value = profileBio.textContent;
   openPopup(popupEditProfile);
-};
-
-const deleteCard = (event) => {
-  event.target.closest(".elements__list-item").remove();
-};
-
-const toggleLike = (event) => {
-  event.target.classList.toggle("elements__like-button_active");
 };
 
 const closePopupByClickingOnOverlay = (event) => {
