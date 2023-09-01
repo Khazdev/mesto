@@ -1,5 +1,5 @@
-import {enableValidation} from "./validate.js";
 import {Card} from "./card.js";
+import {FormValidator} from "./formValidator.js";
 
 const settings = {
   formSelector: ".popup__form",
@@ -18,6 +18,9 @@ const elementsList = document.querySelector(".elements__list");
 
 const popupEditProfile = document.querySelector(".popup_type_edit-profile");
 const popupEditProfileForm = popupEditProfile.querySelector(".popup__form");
+const editProfileFormValidator = new FormValidator(settings, popupEditProfileForm);
+editProfileFormValidator.enableValidation();
+
 const popupEditProfileName = popupEditProfileForm.querySelector(
   ".popup__input_type_name"
 );
@@ -28,6 +31,9 @@ const popupEditProfileBio = popupEditProfileForm.querySelector(
 const cardAddButton = document.querySelector(".profile__add-button");
 const popupAddCard = document.querySelector(".popup_type_add-card");
 const popupAddCardForm = popupAddCard.querySelector(".popup__form");
+const popupAddCardFormValidator = new FormValidator(settings, popupAddCardForm);
+popupAddCardFormValidator.enableValidation();
+
 const popupAddCardName = popupAddCard.querySelector(
   ".popup__input_type_place-name"
 );
@@ -148,5 +154,3 @@ popupAddCardForm.addEventListener("submit", saveAddCardInputPopup);
 
 // Initialize cards
 initCards();
-
-enableValidation(settings);
