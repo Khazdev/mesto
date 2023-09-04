@@ -1,7 +1,6 @@
-import {Card} from "./Card.js";
-import {FormValidator} from "./FormValidator.js";
-import {initialCards, settings} from "./constants.js";
-
+import { Card } from "./Card.js";
+import { FormValidator } from "./FormValidator.js";
+import { initialCards, settings } from "./constants.js";
 
 // Получить элементы
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -11,7 +10,10 @@ const elementsList = document.querySelector(".elements__list");
 
 const popupEditProfile = document.querySelector(".popup_type_edit-profile");
 const popupEditProfileForm = popupEditProfile.querySelector(".popup__form");
-const editProfileFormValidator = new FormValidator(settings, popupEditProfileForm);
+const editProfileFormValidator = new FormValidator(
+  settings,
+  popupEditProfileForm
+);
 editProfileFormValidator.enableValidation();
 
 const popupEditProfileName = popupEditProfileForm.querySelector(
@@ -36,7 +38,9 @@ const popupAddCardLink = popupAddCard.querySelector(
 
 const popupCardView = document.querySelector(".popup_type_image");
 const popupCardViewImage = popupCardView.querySelector(".popup__image");
-const popupCardViewImageLabel = popupCardView.querySelector(".popup__image-label");
+const popupCardViewImageLabel = popupCardView.querySelector(
+  ".popup__image-label"
+);
 
 const closeButtons = document.querySelectorAll(".popup__close");
 
@@ -48,17 +52,19 @@ closeButtons.forEach((button) => {
 const openImagePopup = (cardData) => {
   popupCardViewImage.src = cardData.link;
   popupCardViewImage.alt = cardData.title;
-  popupCardViewImageLabel.textContent = cardData.title
+  popupCardViewImageLabel.textContent = cardData.title;
   openPopup(popupCardView);
 };
 
 const createCard = (cardData) => {
-  return new Card(cardData, ".template-element", () => openImagePopup(cardData)).generateCard();
+  return new Card(cardData, ".template-element", () =>
+    openImagePopup(cardData)
+  ).generateCard();
 };
 
 const initCards = () => {
   initialCards.forEach((cardData) => {
-    const card = createCard({title: cardData.name, link: cardData.link});
+    const card = createCard({ title: cardData.name, link: cardData.link });
     elementsList.appendChild(card);
   });
 };
@@ -84,7 +90,10 @@ const saveEditProfileInputPopup = (event) => {
 
 const saveAddCardInputPopup = (event) => {
   event.preventDefault();
-  const card = createCard({title: popupAddCardName.value, link: popupAddCardLink.value});
+  const card = createCard({
+    title: popupAddCardName.value,
+    link: popupAddCardLink.value,
+  });
   elementsList.prepend(card);
   event.target.reset();
   closePopup(popupAddCard);
