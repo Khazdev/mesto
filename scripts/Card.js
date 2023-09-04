@@ -1,8 +1,9 @@
 export class Card {
-  constructor(data, templateSelector) {
+  constructor(data, templateSelector, openPopupCallback) {
     this._data = data;
     this._templateSelector = templateSelector;
     this._element = null;
+    this._openPopupCallback = openPopupCallback;
   }
 
   _getTemplate() {
@@ -12,10 +13,13 @@ export class Card {
 
   _setEventListeners() {
     const likeButton = this._element.querySelector('.elements__like-button');
-    const deleteButton = this._element.querySelector('.elements__del-button');
-
     likeButton.addEventListener('click', this._toggleLike);
+
+    const deleteButton = this._element.querySelector('.elements__del-button');
     deleteButton.addEventListener('click', this._deleteCard);
+
+    const cardPhotoContainer = this._element.querySelector(".elements__photo-container");
+    cardPhotoContainer.addEventListener("click", () => this._openPopupCallback(this._data));
   }
 
   _toggleLike = (event) => {

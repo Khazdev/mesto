@@ -1,14 +1,7 @@
-import {Card} from "./card.js";
-import {FormValidator} from "./formValidator.js";
+import {Card} from "./Card.js";
+import {FormValidator} from "./FormValidator.js";
+import {initialCards, settings} from "./constants.js";
 
-const settings = {
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__save-button",
-  inactiveButtonClass: "popup__save-button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
-};
 
 // Получить элементы
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -42,8 +35,8 @@ const popupAddCardLink = popupAddCard.querySelector(
 );
 
 const popupCardView = document.querySelector(".popup_type_image");
-const image = popupCardView.querySelector(".popup__image");
-const imageLabel = popupCardView.querySelector(".popup__image-label");
+const popupCardViewImage = popupCardView.querySelector(".popup__image");
+const popupCardViewImageLabel = popupCardView.querySelector(".popup__image-label");
 
 const closeButtons = document.querySelectorAll(".popup__close");
 
@@ -52,45 +45,15 @@ closeButtons.forEach((button) => {
   button.addEventListener("click", () => closePopup(popup));
 });
 
-const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
-
-const getImageFromCard = (cardData) => {
-  image.src = cardData.link;
-  image.alt = cardData.title;
-  imageLabel.textContent = cardData.title
+const openImagePopup = (cardData) => {
+  popupCardViewImage.src = cardData.link;
+  popupCardViewImage.alt = cardData.title;
+  popupCardViewImageLabel.textContent = cardData.title
   openPopup(popupCardView);
 };
 
 const createCard = (cardData) => {
-  const card = new Card(cardData, ".template-element").generateCard();
-  const cardPhotoContainer = card.querySelector(".elements__photo-container");
-  cardPhotoContainer.addEventListener("click", () => getImageFromCard(cardData));
-  return card;
+  return new Card(cardData, ".template-element", () => openImagePopup(cardData)).generateCard();
 };
 
 const initCards = () => {
