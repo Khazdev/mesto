@@ -1,6 +1,7 @@
 import { Card } from "./Card.js";
 import { FormValidator } from "./FormValidator.js";
 import { initialCards, settings } from "./constants.js";
+import {Section} from "./Section.js";
 
 // Получить элементы
 const profileEditButton = document.querySelector(".profile__edit-button");
@@ -63,10 +64,15 @@ const createCard = (cardData) => {
 };
 
 const initCards = () => {
-  initialCards.forEach((cardData) => {
-    const card = createCard({ title: cardData.name, link: cardData.link });
-    elementsList.appendChild(card);
-  });
+  const cardSection = new Section({
+    items: initialCards,
+    renderer: (cardData) => {
+      const card = createCard({ title: cardData.name, link: cardData.link });
+      cardSection.addItem(card);
+    }
+  }, '.elements__list');
+
+  cardSection.render();
 };
 
 const openPopup = (popup) => {
