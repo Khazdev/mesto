@@ -1,4 +1,4 @@
-import { Card } from "./scripts/Card.js";
+import { Card } from "../scripts/components/Card.js";
 import {
   avatarElement,
   cardAddButton,
@@ -11,13 +11,13 @@ import {
   popupEditProfileName,
   profileEditButton,
   settings,
-} from "./scripts/constants.js";
-import { Section } from "./scripts/Section.js";
-import { PopupWithImage } from "./scripts/PopupWithImage.js";
-import { PopupWithForm } from "./scripts/PopupWithForm.js";
-import { UserInfo } from "./scripts/UserInfo.js";
-import { FormValidator } from "./scripts/FormValidator.js";
-import "./pages/index.css";
+} from "../scripts/utils/constants.js";
+import { Section } from "../scripts/components/Section.js";
+import { PopupWithImage } from "../scripts/components/PopupWithImage.js";
+import { PopupWithForm } from "../scripts/components/PopupWithForm.js";
+import { UserInfo } from "../scripts/components/UserInfo.js";
+import { FormValidator } from "../scripts/components/FormValidator.js";
+import "./index.css";
 
 const avatar = new URL("./images/avatar.jpg", import.meta.url);
 const logo = new URL("./images/logo.svg", import.meta.url);
