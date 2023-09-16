@@ -1,20 +1,30 @@
-import { Card } from "./Card.js";
+import { Card } from "./scripts/Card.js";
 import {
+  avatarElement,
   cardAddButton,
   cardElementsList,
   initialCards,
+  logoElement,
   popupAddCardForm,
   popupEditProfileBio,
   popupEditProfileForm,
   popupEditProfileName,
   profileEditButton,
   settings,
-} from "./constants.js";
-import { Section } from "./Section.js";
-import { PopupWithImage } from "./PopupWithImage.js";
-import { PopupWithForm } from "./PopupWithForm.js";
-import { UserInfo } from "./UserInfo.js";
-import { FormValidator } from "./FormValidator.js";
+} from "./scripts/constants.js";
+import { Section } from "./scripts/Section.js";
+import { PopupWithImage } from "./scripts/PopupWithImage.js";
+import { PopupWithForm } from "./scripts/PopupWithForm.js";
+import { UserInfo } from "./scripts/UserInfo.js";
+import { FormValidator } from "./scripts/FormValidator.js";
+import "./pages/index.css";
+
+const avatar = new URL("./images/avatar.jpg", import.meta.url);
+const logo = new URL("./images/logo.svg", import.meta.url);
+
+avatarElement.src = avatar.href;
+
+logoElement.src = logo.href;
 
 // Создание экземпляра UserInfo
 const userInfo = new UserInfo({

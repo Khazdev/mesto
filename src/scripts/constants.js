@@ -51,3 +51,6 @@ export const cardAddButton = document.querySelector(".profile__add-button");
 export const popupEditProfileForm = document.querySelector(
   ".popup__form_type_edit-profile",
 );
+
+export const avatarElement = document.querySelector(".profile__avatar");
+export const logoElement = document.querySelector(".header__logo");
