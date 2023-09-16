@@ -33,3 +33,21 @@ export const settings = {
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_visible",
 };
+
+export const popupAddCardForm = document.querySelector(".popup__form_add-card");
+export const cardElementsList = document.querySelector(".elements__list");
+export const popupEditProfileName = document.querySelector(
+  ".popup__input_type_name",
+);
+export const popupEditProfileBio = document.querySelector(
+  ".popup__input_type_bio",
+);
+
+export const profileEditButton = document.querySelector(
+  ".profile__edit-button",
+);
+export const cardAddButton = document.querySelector(".profile__add-button");
+
+export const popupEditProfileForm = document.querySelector(
+  ".popup__form_type_edit-profile",
+);
