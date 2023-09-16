@@ -19,8 +19,8 @@ import { UserInfo } from "../scripts/components/UserInfo.js";
 import { FormValidator } from "../scripts/components/FormValidator.js";
 import "./index.css";
 
-const avatar = new URL("./images/avatar.jpg", import.meta.url);
-const logo = new URL("./images/logo.svg", import.meta.url);
+const avatar = new URL("../images/avatar.jpg", import.meta.url);
+const logo = new URL("../images/logo.svg", import.meta.url);
 
 avatarElement.src = avatar.href;
 
