@@ -5,8 +5,6 @@ import {
   cardElementsList,
   initialCards,
   logoElement,
-  popupAddCardForm,
-  popupEditProfileForm,
   profileEditButton,
   settings,
 } from "../scripts/utils/constants.js";
@@ -21,10 +19,8 @@ const avatar = new URL("../images/avatar.jpg", import.meta.url);
 const logo = new URL("../images/logo.svg", import.meta.url);
 
 avatarElement.src = avatar.href;
-
 logoElement.src = logo.href;
 
-// Создание экземпляра UserInfo
 const userInfo = new UserInfo({
   nameSelector: ".profile__name",
   bioSelector: ".profile__bio",
@@ -50,7 +46,6 @@ const cardSection = new Section(
   cardElementsList,
 );
 
-// Обработчик отправки формы редактирования профиля
 const handleEditProfileFormSubmit = (formData) => {
   userInfo.setUserInfo({
     name: formData["profile-name"],
@@ -59,7 +54,6 @@ const handleEditProfileFormSubmit = (formData) => {
   popupEditProfile.close();
 };
 
-// Создание экземпляра PopupWithForm для редактирования профиля
 const popupEditProfile = new PopupWithForm(
   ".popup_type_edit-profile",
   handleEditProfileFormSubmit,
@@ -75,14 +69,6 @@ const renderEditProfileInputs = () => {
   popupEditProfile.setInputValues(formData);
 };
 
-// Инициализация валидации формы редактирования профиля
-const editProfileFormValidator = new FormValidator(
-  settings,
-  popupEditProfileForm,
-);
-editProfileFormValidator.enableValidation();
-
-// Обработчик отправки формы добавления карточки
 const handleAddCardFormSubmit = (formData) => {
   const card = createCard({
     title: formData["card-place-name"],
@@ -92,18 +78,15 @@ const handleAddCardFormSubmit = (formData) => {
   popupAddCard.close();
 };
 
-// Создание экземпляра PopupWithForm для добавления карточки
 const popupAddCard = new PopupWithForm(
   ".popup_type_add-card",
   handleAddCardFormSubmit,
 );
 popupAddCard.setEventListeners();
-// Инициализация валидации формы добавления карточки
-const popupAddCardFormValidator = new FormValidator(settings, popupAddCardForm);
-popupAddCardFormValidator.enableValidation();
 
 const popupCardView = new PopupWithImage(".popup_type_image");
 popupCardView.setEventListeners();
+
 const openCardViewPopup = (cardData) => {
   popupCardView.open(cardData.link, cardData.title);
 };
@@ -121,3 +104,21 @@ profileEditButton.addEventListener("click", handleEditProfileButtonClick);
 cardAddButton.addEventListener("click", handleCardAddButtonClick);
 
 cardSection.render();
+
+const formValidators = {};
+
+// Включение валидации
+const enableValidation = (settings) => {
+  const formList = Array.from(document.querySelectorAll(settings.formSelector));
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(settings, formElement);
+    // получаем данные из атрибута `name` у формы
+    const formName = formElement.getAttribute("name");
+
+    // вот тут в объект записываем под именем формы
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation(settings);
