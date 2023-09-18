@@ -6,9 +6,7 @@ import {
   initialCards,
   logoElement,
   popupAddCardForm,
-  popupEditProfileBio,
   popupEditProfileForm,
-  popupEditProfileName,
   profileEditButton,
   settings,
 } from "../scripts/utils/constants.js";
@@ -32,6 +30,26 @@ const userInfo = new UserInfo({
   bioSelector: ".profile__bio",
 });
 
+const createCard = (cardData) => {
+  return new Card(cardData, ".template-element", () =>
+    openCardViewPopup(cardData),
+  ).generateCard();
+};
+
+const cardSection = new Section(
+  {
+    items: initialCards,
+    renderer: (cardData) => {
+      const card = createCard({
+        title: cardData.name,
+        link: cardData.link,
+      });
+      cardSection.addItem(card);
+    },
+  },
+  cardElementsList,
+);
+
 // Обработчик отправки формы редактирования профиля
 const handleEditProfileFormSubmit = (formData) => {
   userInfo.setUserInfo({
@@ -49,8 +67,12 @@ const popupEditProfile = new PopupWithForm(
 popupEditProfile.setEventListeners();
 
 const renderEditProfileInputs = () => {
-  popupEditProfileName.value = userInfo.getUserInfo().name;
-  popupEditProfileBio.value = userInfo.getUserInfo().bio;
+  const { bio, name } = userInfo.getUserInfo();
+  const formData = {
+    "profile-name": name,
+    "profile-bio": bio,
+  };
+  popupEditProfile.setInputValues(formData);
 };
 
 // Инициализация валидации формы редактирования профиля
@@ -66,7 +88,7 @@ const handleAddCardFormSubmit = (formData) => {
     title: formData["card-place-name"],
     link: formData["card-image-link"],
   });
-  cardElementsList.prepend(card);
+  cardSection.prependItem(card);
   popupAddCard.close();
 };
 
@@ -79,31 +101,11 @@ popupAddCard.setEventListeners();
 // Инициализация валидации формы добавления карточки
 const popupAddCardFormValidator = new FormValidator(settings, popupAddCardForm);
 popupAddCardFormValidator.enableValidation();
-//
+
+const popupCardView = new PopupWithImage(".popup_type_image");
+popupCardView.setEventListeners();
 const openCardViewPopup = (cardData) => {
-  const popupCardView = new PopupWithImage(".popup_type_image");
-  popupCardView.setEventListeners();
   popupCardView.open(cardData.link, cardData.title);
-};
-
-const createCard = (cardData) => {
-  return new Card(cardData, ".template-element", () =>
-    openCardViewPopup(cardData),
-  ).generateCard();
-};
-
-const initCards = () => {
-  const cardSection = new Section(
-    {
-      items: initialCards,
-      renderer: (cardData) => {
-        const card = createCard({ title: cardData.name, link: cardData.link });
-        cardSection.addItem(card);
-      },
-    },
-    ".elements__list",
-  );
-  cardSection.render();
 };
 
 const handleEditProfileButtonClick = () => {
@@ -118,4 +120,4 @@ const handleCardAddButtonClick = () => {
 profileEditButton.addEventListener("click", handleEditProfileButtonClick);
 cardAddButton.addEventListener("click", handleCardAddButtonClick);
 
-initCards();
+cardSection.render();
