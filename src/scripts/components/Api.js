@@ -1,80 +1,63 @@
 class Api {
   constructor(options) {
     // тело конструктора
+    this.baseurl = options.baseUrl;
+    this.headers = options.headers;
   }
 
   getInitialCards() {
-    fetch('https://mesto.nomoreparties.co/v1/cohort-76/cards', {
-      headers: {
-        authorization: 'beb01290-b862-4e63-9356-a8cedbbf4df4'
-      }
+    return fetch(`${this.baseurl}/cards`, {
+      headers: this.headers
     })
-      .then(res => res.json())
-      .then((result) => {
-        console.log(result);
-      });
+      .then(this._checkResponse);
   }
 
   getUserInfo() {
-    fetch('https://nomoreparties.co/v1/cohort-76/users/me', {
-      headers: {
-        authorization: 'beb01290-b862-4e63-9356-a8cedbbf4df4'
-      }
+    return fetch(`${this.baseurl}/users/me`, {
+      headers: this.headers
     })
-      .then(res => res.json())
-      .then((result) => {
-        console.log(result);
-      });
+      .then(this._checkResponse);
   }
 
   updateProfile(name, about) {
-    fetch('https://mesto.nomoreparties.co/v1/cohort-76/users/me', {
+    return fetch(`${this.baseurl}/users/me`, {
       method: 'PATCH',
-      headers: {
-        authorization: 'beb01290-b862-4e63-9356-a8cedbbf4df4',
-        'Content-Type': 'application/json'
-      },
+      headers: this.headers,
       body: JSON.stringify({
-        name: `${name}`,
-        about: `${about}`
+        name: name,
+        about: about
       })
-    }).then(r => r.json())
-      .then((result) => {
-        console.log(result);
-      });
+    })
+      .then(this._checkResponse);
   }
 
   addCard(name, link) {
-    fetch('https://mesto.nomoreparties.co/v1/cohort-76/cards', {
+    return fetch(`${this.baseurl}/cards`, {
       method: 'POST',
-      headers: {
-        authorization: 'beb01290-b862-4e63-9356-a8cedbbf4df4',
-        'Content-Type': 'application/json'
-      },
+      headers: this.headers,
       body: JSON.stringify({
-        name: `${name}`,
-        link: `${link}`
+        name: name,
+        link: link
       })
-    }).then(r => r.json())
-      .then((result) => {
-        console.log(result);
-      });
+    })
+      .then(this._checkResponse);
   }
 
   deleteCard(id) {
-    fetch('https://mesto.nomoreparties.co/v1/cohort-76/cards/' + id, {
+    return fetch(`${this.baseurl}/cards/${id}`, {
       method: 'DELETE',
-      headers: {
-        authorization: 'beb01290-b862-4e63-9356-a8cedbbf4df4',
-        'Content-Type': 'application/json'
-      },
-    }).then(r => r.json())
-      .then((result) => {
-        console.log(result);
-      });
+      headers: this.headers
+    })
+      .then(this._checkResponse);
   }
 
   // другие методы работы с API
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error: ${res.status}`);
+  }
 }
 
 const api = new Api({
