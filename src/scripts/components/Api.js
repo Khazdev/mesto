@@ -7,48 +7,59 @@ class Api {
 
   getInitialCards() {
     return fetch(`${this.baseurl}/cards`, {
-      headers: this.headers
-    })
-      .then(this._checkResponse);
+      headers: this.headers,
+    }).then(this._checkResponse);
   }
 
   getUserInfo() {
     return fetch(`${this.baseurl}/users/me`, {
-      headers: this.headers
+      headers: this.headers,
     })
-      .then(this._checkResponse);
+      .then(this._checkResponse)
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   updateProfile(name, about) {
     return fetch(`${this.baseurl}/users/me`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
         name: name,
-        about: about
-      })
+        about: about,
+      }),
     })
-      .then(this._checkResponse);
+      .then(this._checkResponse)
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   addCard(name, link) {
     return fetch(`${this.baseurl}/cards`, {
-      method: 'POST',
+      method: "POST",
       headers: this.headers,
       body: JSON.stringify({
         name: name,
-        link: link
-      })
+        link: link,
+      }),
     })
-      .then(this._checkResponse);
+      .then(this._checkResponse)
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   deleteCard(id) {
     return fetch(`${this.baseurl}/cards/${id}`, {
-      method: 'DELETE',
-      headers: this.headers
+      method: "DELETE",
+      headers: this.headers,
     })
-      .then(this._checkResponse);
+      .then(this._checkResponse)
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   // другие методы работы с API
@@ -60,10 +71,10 @@ class Api {
   }
 }
 
-const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-76',
+export const api = new Api({
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-76",
   headers: {
-    authorization: 'beb01290-b862-4e63-9356-a8cedbbf4df4',
-    'Content-Type': 'application/json'
-  }
+    authorization: "beb01290-b862-4e63-9356-a8cedbbf4df4",
+    "Content-Type": "application/json",
+  },
 });

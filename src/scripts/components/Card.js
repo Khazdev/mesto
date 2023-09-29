@@ -12,6 +12,8 @@ export class Card {
   }
 
   _setEventListeners() {
+    const likeCounter = this._element.querySelector(".elements__like-counter");
+    likeCounter.textContent = this._data.likes.length;
     const likeButton = this._element.querySelector(".elements__like-button");
     likeButton.addEventListener("click", this._toggleLike);
 

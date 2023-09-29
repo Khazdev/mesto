@@ -3,7 +3,6 @@ import {
   avatarElement,
   cardAddButton,
   cardElementsList,
-  initialCards,
   logoElement,
   profileEditButton,
   settings,
@@ -14,6 +13,7 @@ import { PopupWithForm } from "../scripts/components/PopupWithForm.js";
 import { UserInfo } from "../scripts/components/UserInfo.js";
 import { FormValidator } from "../scripts/components/FormValidator.js";
 import "./index.css";
+import { api } from "../scripts/components/Api";
 
 const avatar = new URL("../images/avatar.jpg", import.meta.url);
 const logo = new URL("../images/logo.svg", import.meta.url);
@@ -26,19 +26,32 @@ const userInfo = new UserInfo({
   bioSelector: ".profile__bio",
 });
 
+function renderUserInfo() {
+  api.getUserInfo().then(({ name, about: bio }) => {
+    userInfo.setUserInfo({ name, bio });
+  });
+}
+
+renderUserInfo();
 const createCard = (cardData) => {
   return new Card(cardData, ".template-element", () =>
     openCardViewPopup(cardData),
   ).generateCard();
 };
+const initialCards = api.getInitialCards().then((result) => {
+  return result.map(({ name, link, likes }) => {
+    return { name, link, likes };
+  });
+});
 
 const cardSection = new Section(
   {
-    items: initialCards,
+    items: await initialCards,
     renderer: (cardData) => {
       const card = createCard({
         title: cardData.name,
         link: cardData.link,
+        likes: cardData.likes,
       });
       cardSection.addItem(card);
     },
@@ -46,10 +59,13 @@ const cardSection = new Section(
   cardElementsList,
 );
 
-const handleEditProfileFormSubmit = (formData) => {
+const handleEditProfileFormSubmit = async (formData) => {
+  const profileName = formData["profile-name"];
+  const profileBio = formData["profile-bio"];
+  await api.updateProfile(profileName, profileBio);
   userInfo.setUserInfo({
-    name: formData["profile-name"],
-    bio: formData["profile-bio"],
+    name: profileName,
+    bio: profileBio,
   });
   popupEditProfile.close();
 };
@@ -69,10 +85,13 @@ const renderEditProfileInputs = () => {
   popupEditProfile.setInputValues(formData);
 };
 
-const handleAddCardFormSubmit = (formData) => {
+const handleAddCardFormSubmit = async (formData) => {
+  const name = formData["card-place-name"];
+  const link = formData["card-image-link"];
+  await api.addCard(name, link);
   const card = createCard({
-    title: formData["card-place-name"],
-    link: formData["card-image-link"],
+    title: name,
+    link: link,
   });
   cardSection.prependItem(card);
   popupAddCard.close();
