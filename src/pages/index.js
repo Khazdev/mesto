@@ -14,6 +14,7 @@ import { UserInfo } from "../scripts/components/UserInfo.js";
 import { FormValidator } from "../scripts/components/FormValidator.js";
 import "./index.css";
 import { api } from "../scripts/components/Api";
+import { PopupConfirm } from "../scripts/components/PopupConfirm.js";
 
 const avatar = new URL("../images/avatar.jpg", import.meta.url);
 const logo = new URL("../images/logo.svg", import.meta.url);
@@ -27,20 +28,40 @@ const userInfo = new UserInfo({
 });
 
 function renderUserInfo() {
-  api.getUserInfo().then(({ name, about: bio }) => {
-    userInfo.setUserInfo({ name, bio });
+  api.getUserInfo().then(({ name, about: bio, _id: id }) => {
+    userInfo.setUserInfo({ name, bio, id });
   });
 }
 
 renderUserInfo();
-const createCard = (cardData) => {
-  return new Card(cardData, ".template-element", () =>
-    openCardViewPopup(cardData),
-  ).generateCard();
+const handleConfirmFormSubmit = (card) => {
+  card.delete();
+  popupConfirmDelete.close();
 };
+const popupConfirmDelete = new PopupConfirm(
+  ".popup_type_confirm",
+  handleConfirmFormSubmit,
+);
+
+popupConfirmDelete.setEventListeners();
+
+function openConfirmPopup(card) {
+  popupConfirmDelete.open(card);
+}
+
+const createCard = (cardData) => {
+  const card = new Card(
+    cardData,
+    ".template-element",
+    () => openCardViewPopup(cardData),
+    () => openConfirmPopup(card),
+  );
+  return card.generateCard();
+};
+
 const initialCards = api.getInitialCards().then((result) => {
-  return result.map(({ name, link, likes }) => {
-    return { name, link, likes };
+  return result.map(({ name, link, likes, owner }) => {
+    return { name, link, likes, owner };
   });
 });
 
@@ -51,7 +72,9 @@ const cardSection = new Section(
       const card = createCard({
         title: cardData.name,
         link: cardData.link,
-        likes: cardData.likes,
+        likes: (cardData.likes = 0),
+        isOwner: cardData.owner._id === userInfo.getUserInfo().id,
+        id: cardData,
       });
       cardSection.addItem(card);
     },

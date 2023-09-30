@@ -157,19 +157,27 @@
       </figure>
     </section>
     <section class="popup popup_type_confirm" aria-label="подтверждение">
-      <button
-        class="popup__close"
-        type="button"
-        aria-label="кнопка закрыть попап"
-      ></button>
-      <h2 class="popup__title">Вы уверены?</h2>
-      <button
-        class="popup__save-button popup__save-button_confirm"
-        type="submit"
-        disabled
-      >
-        Да
-      </button>
+      <div class="popup__container">
+        <button
+          class="popup__close"
+          type="button"
+          aria-label="кнопка закрыть попап"
+        ></button>
+        <form
+          class="popup__form popup__form_confirm"
+          name="add-card"
+          method="get"
+        >
+          <h2 class="popup__title">Вы уверены?</h2>
+          <button
+            class="popup__save-button popup__save-button_confirm"
+            type="submit"
+            disabled
+          >
+            Да
+          </button>
+        </form>
+      </div>
     </section>
     <template class="template-element">
       <li class="elements__list-item">

@@ -1,25 +1,36 @@
 export class Card {
-  constructor(data, templateSelector, openPopupCallback) {
+  constructor(
+    data,
+    templateSelector,
+    openImagePopupCallback,
+    openConfirmPopupCallback,
+  ) {
     this._data = data;
     this._templateSelector = templateSelector;
     this._element = null;
-    this._openPopupCallback = openPopupCallback;
+    this._openPopupCallback = openImagePopupCallback;
+    this._openConfirmPopupCallback = openConfirmPopupCallback;
   }
 
   _getTemplate() {
-    const template = document.querySelector(this._templateSelector).content;
+    const template = document
+      .querySelector(this._templateSelector)
+      .content.querySelector(".elements__list-item");
     return template.cloneNode(true);
   }
 
   _setEventListeners() {
     const likeCounter = this._element.querySelector(".elements__like-counter");
-    likeCounter.textContent = this._data.likes.length;
+    likeCounter.textContent = this._data.likes;
     const likeButton = this._element.querySelector(".elements__like-button");
     likeButton.addEventListener("click", this._toggleLike);
 
     const deleteButton = this._element.querySelector(".elements__del-button");
-    deleteButton.addEventListener("click", this._deleteCard);
 
+    if (!this._data.isOwner) {
+      deleteButton.remove();
+      deleteButton.addEventListener("click", this._openConfirmPopupCallback);
+    }
     const cardPhotoContainer = this._element.querySelector(
       ".elements__photo-container",
     );
@@ -32,9 +43,9 @@ export class Card {
     event.target.classList.toggle("elements__like-button_active");
   };
 
-  _deleteCard(event) {
-    event.target.closest(".elements__list-item").remove();
-  }
+  // _deleteCard(event) {
+  //   event.target.closest(".elements__list-item").remove();
+  // }
 
   generateCard() {
     this._element = this._getTemplate();
@@ -50,5 +61,9 @@ export class Card {
     cardTitle.textContent = this._data.title;
 
     return this._element;
+  }
+
+  delete() {
+    this._element.remove();
   }
 }
