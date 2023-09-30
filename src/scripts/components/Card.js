@@ -10,6 +10,7 @@ export class Card {
     this._element = null;
     this._openPopupCallback = openImagePopupCallback;
     this._openConfirmPopupCallback = openConfirmPopupCallback;
+    this._id = data.id;
   }
 
   _getTemplate() {
@@ -29,6 +30,7 @@ export class Card {
 
     if (!this._data.isOwner) {
       deleteButton.remove();
+    } else {
       deleteButton.addEventListener("click", this._openConfirmPopupCallback);
     }
     const cardPhotoContainer = this._element.querySelector(
@@ -50,7 +52,6 @@ export class Card {
   generateCard() {
     this._element = this._getTemplate();
     this._setEventListeners();
-
     const cardImage = this._element.querySelector(".elements__list-item-photo");
     const cardTitle = this._element.querySelector(
       ".elements__list-item-header",
@@ -65,5 +66,9 @@ export class Card {
 
   delete() {
     this._element.remove();
+  }
+
+  getId() {
+    return this._id;
   }
 }

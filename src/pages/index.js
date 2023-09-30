@@ -34,7 +34,8 @@ function renderUserInfo() {
 }
 
 renderUserInfo();
-const handleConfirmFormSubmit = (card) => {
+const handleConfirmFormSubmit = async (card) => {
+  await api.deleteCard(card.getId());
   card.delete();
   popupConfirmDelete.close();
 };
@@ -60,8 +61,8 @@ const createCard = (cardData) => {
 };
 
 const initialCards = api.getInitialCards().then((result) => {
-  return result.map(({ name, link, likes, owner }) => {
-    return { name, link, likes, owner };
+  return result.map(({ name, link, likes, owner, _id: id }) => {
+    return { name, link, likes, owner, id };
   });
 });
 
@@ -74,7 +75,7 @@ const cardSection = new Section(
         link: cardData.link,
         likes: (cardData.likes = 0),
         isOwner: cardData.owner._id === userInfo.getUserInfo().id,
-        id: cardData,
+        id: cardData.id,
       });
       cardSection.addItem(card);
     },
