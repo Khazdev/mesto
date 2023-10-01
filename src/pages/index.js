@@ -18,7 +18,6 @@ import { PopupConfirm } from "../scripts/components/PopupConfirm.js";
 
 const avatar = new URL("../images/avatar.jpg", import.meta.url);
 const logo = new URL("../images/logo.svg", import.meta.url);
-
 avatarElement.src = avatar.href;
 logoElement.src = logo.href;
 
@@ -27,23 +26,27 @@ const userInfo = new UserInfo({
   bioSelector: ".profile__bio",
 });
 
-function renderUserInfo() {
-  api.getUserInfo().then(({ name, about: bio, _id: id }) => {
-    userInfo.setUserInfo({ name, bio, id });
-  });
+async function renderUserInfo() {
+  const {
+    name,
+    about: bio,
+    _id: id,
+  } = await api.getUserInfo().catch((error) => console.log(error));
+  userInfo.setUserInfo({ name, bio, id });
 }
 
-renderUserInfo();
+renderUserInfo().catch((error) => console.log(error));
+
 const handleConfirmFormSubmit = async (card) => {
-  await api.deleteCard(card.getId());
+  await api.deleteCard(card.getId()).catch((error) => console.log(error));
   card.delete();
   popupConfirmDelete.close();
 };
+
 const popupConfirmDelete = new PopupConfirm(
   ".popup_type_confirm",
   handleConfirmFormSubmit,
 );
-
 popupConfirmDelete.setEventListeners();
 
 function openConfirmPopup(card) {
@@ -51,15 +54,19 @@ function openConfirmPopup(card) {
 }
 
 async function likeCard(card) {
-  return await api.likeCard(card.getId()).then((res) => {
-    return res.likes;
-  });
+  const res = await api
+    .likeCard(card.getId())
+    .catch((error) => console.log(error));
+  return res.likes;
 }
+
 async function unlikeCard(card) {
-  return await api.unlikeCard(card.getId()).then((res) => {
-    return res.likes;
-  });
+  const res = await api
+    .unlikeCard(card.getId())
+    .catch((error) => console.log(error));
+  return res.likes;
 }
+
 const createCard = (cardData) => {
   const card = new Card(
     cardData,
@@ -77,7 +84,6 @@ const initialCards = api.getInitialCards().then((result) => {
     return { name, link, likes, owner, id };
   });
 });
-console.log(initialCards);
 
 const cardSection = new Section(
   {
@@ -101,33 +107,13 @@ const cardSection = new Section(
   },
   cardElementsList,
 );
-//
-// const cardSection = new Section(
-//   {
-//     items: await initialCards,
-//     renderer: (cardData) => {
-//       const card = createCard({
-//         title: cardData.name,
-//         link: cardData.link,
-//         likes: cardData.likes,
-//         // isOwner: cardData.owner._id === userInfo.getUserInfo().id,
-//         ownerId: cardData.owner._id,
-//         id: cardData.id,
-//         isLikedByCurrentUser: cardData.likes.find((like) => {
-//           return like._id === userInfo.getUserInfo().id;
-//         }),
-//         userId: userInfo.getUserInfo().id,
-//       });
-//       cardSection.addItem(card);
-//     },
-//   },
-//   cardElementsList,
-// );
 
 const handleEditProfileFormSubmit = async (formData) => {
   const profileName = formData["profile-name"];
   const profileBio = formData["profile-bio"];
-  await api.updateProfile(profileName, profileBio);
+  await api
+    .updateProfile(profileName, profileBio)
+    .catch((error) => console.log(error));
   userInfo.setUserInfo({
     name: profileName,
     bio: profileBio,
@@ -153,7 +139,7 @@ const renderEditProfileInputs = () => {
 const handleAddCardFormSubmit = async (formData) => {
   const name = formData["card-place-name"];
   const link = formData["card-image-link"];
-  await api.addCard(name, link);
+  await api.addCard(name, link).catch((error) => console.log(error));
   const card = createCard({
     title: name,
     link: link,
@@ -191,15 +177,11 @@ cardSection.render();
 
 const formValidators = {};
 
-// Включение валидации
 const enableValidation = (settings) => {
   const formList = Array.from(document.querySelectorAll(settings.formSelector));
   formList.forEach((formElement) => {
     const validator = new FormValidator(settings, formElement);
-    // получаем данные из атрибута `name` у формы
     const formName = formElement.getAttribute("name");
-
-    // вот тут в объект записываем под именем формы
     formValidators[formName] = validator;
     validator.enableValidation();
   });
