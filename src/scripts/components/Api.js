@@ -14,11 +14,7 @@ class Api {
   getUserInfo() {
     return fetch(`${this.baseurl}/users/me`, {
       headers: this.headers,
-    })
-      .then(this._checkResponse)
-      .catch((error) => {
-        console.error(error);
-      });
+    }).then(this._checkResponse);
   }
 
   updateProfile(name, about) {
@@ -29,11 +25,7 @@ class Api {
         name: name,
         about: about,
       }),
-    })
-      .then(this._checkResponse)
-      .catch((error) => {
-        console.error(error);
-      });
+    }).then(this._checkResponse);
   }
 
   addCard(name, link) {
@@ -44,44 +36,28 @@ class Api {
         name: name,
         link: link,
       }),
-    })
-      .then(this._checkResponse)
-      .catch((error) => {
-        console.error(error);
-      });
+    }).then(this._checkResponse);
   }
 
   deleteCard(id) {
     return fetch(`${this.baseurl}/cards/${id}`, {
       method: "DELETE",
       headers: this.headers,
-    })
-      .then(this._checkResponse)
-      .catch((error) => {
-        console.error(error);
-      });
+    }).then(this._checkResponse);
   }
 
   likeCard(id) {
     return fetch(`${this.baseurl}/cards/${id}/likes`, {
       method: "PUT",
       headers: this.headers,
-    })
-      .then(this._checkResponse)
-      .catch((error) => {
-        console.error(error);
-      });
+    }).then(this._checkResponse);
   }
 
   unlikeCard(id) {
     return fetch(`${this.baseurl}/cards/${id}/likes`, {
       method: "DELETE",
       headers: this.headers,
-    })
-      .then(this._checkResponse)
-      .catch((error) => {
-        console.error(error);
-      });
+    }).then(this._checkResponse);
   }
 
   updateAvatar(avatarLink) {
@@ -91,11 +67,7 @@ class Api {
       body: JSON.stringify({
         avatar: avatarLink,
       }),
-    })
-      .then(this._checkResponse)
-      .catch((error) => {
-        console.error(error);
-      });
+    }).then(this._checkResponse);
   }
 
   _checkResponse(res) {

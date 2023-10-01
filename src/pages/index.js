@@ -35,11 +35,15 @@ async function renderUserInfo() {
 
 renderUserInfo().catch((error) => console.log(error));
 
-const handleConfirmFormSubmit = async (card) => {
-  await api.deleteCard(card.getId());
-  card.delete();
+async function handleConfirmFormSubmit(card) {
+  await api
+    .deleteCard(card.getId())
+    .then((res) => {
+      card.delete();
+    })
+    .catch((error) => console.log(error));
   popupConfirmDelete.close();
-};
+}
 
 const popupConfirmDelete = new PopupConfirm(
   ".popup_type_confirm",
@@ -52,13 +56,21 @@ function openConfirmPopup(card) {
 }
 
 async function likeCard(card) {
-  const res = await api.likeCard(card.getId());
-  return res.likes;
+  return await api
+    .likeCard(card.getId())
+    .then((res) => {
+      return res.likes;
+    })
+    .catch((error) => console.log(error));
 }
 
 async function unlikeCard(card) {
-  const res = await api.unlikeCard(card.getId());
-  return res.likes;
+  return await api
+    .unlikeCard(card.getId())
+    .then((res) => {
+      return res.likes;
+    })
+    .catch((error) => console.log(error));
 }
 
 const createCard = (cardData) => {
@@ -108,15 +120,15 @@ const handleEditProfileFormSubmit = async (formData) => {
   popupEditProfile.renderLoading(true);
   try {
     await api.updateProfile(profileName, profileBio);
+    userInfo.setUserInfo({
+      name: profileName,
+      bio: profileBio,
+    });
   } catch (error) {
     console.log(error);
   } finally {
     popupEditProfile.renderLoading(false);
   }
-  userInfo.setUserInfo({
-    name: profileName,
-    bio: profileBio,
-  });
   popupEditProfile.close();
 };
 
@@ -141,17 +153,21 @@ const handleAddCardFormSubmit = async (formData) => {
   const link = formData["card-image-link"];
   popupAddCard.renderLoading(true);
   try {
-    await api.addCard(name, link);
+    const { likes, owner, _id: id } = await api.addCard(name, link);
+    const card = createCard({
+      title: name,
+      link,
+      likes,
+      ownerId: owner._id,
+      id,
+      userId: userInfo.getUserInfo().id,
+    });
+    cardSection.prependItem(card);
   } catch (error) {
     console.log(error);
   } finally {
     popupAddCard.renderLoading(false);
   }
-  const card = createCard({
-    title: name,
-    link: link,
-  });
-  cardSection.prependItem(card);
   popupAddCard.close();
 };
 
