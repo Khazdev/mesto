@@ -3,7 +3,6 @@ import {
   avatarElement,
   cardAddButton,
   cardElementsList,
-  initialCards,
   logoElement,
   profileEditButton,
   settings,
@@ -14,10 +13,11 @@ import { PopupWithForm } from "../scripts/components/PopupWithForm.js";
 import { UserInfo } from "../scripts/components/UserInfo.js";
 import { FormValidator } from "../scripts/components/FormValidator.js";
 import "./index.css";
+import { api } from "../scripts/components/Api";
+import { PopupConfirm } from "../scripts/components/PopupConfirm.js";
 
 const avatar = new URL("../images/avatar.jpg", import.meta.url);
 const logo = new URL("../images/logo.svg", import.meta.url);
-
 avatarElement.src = avatar.href;
 logoElement.src = logo.href;
 
@@ -26,19 +26,81 @@ const userInfo = new UserInfo({
   bioSelector: ".profile__bio",
 });
 
-const createCard = (cardData) => {
-  return new Card(cardData, ".template-element", () =>
-    openCardViewPopup(cardData),
-  ).generateCard();
+async function renderUserInfo() {
+  const {
+    name,
+    about: bio,
+    _id: id,
+  } = await api.getUserInfo().catch((error) => console.log(error));
+  userInfo.setUserInfo({ name, bio, id });
+}
+
+renderUserInfo().catch((error) => console.log(error));
+
+const handleConfirmFormSubmit = async (card) => {
+  await api.deleteCard(card.getId()).catch((error) => console.log(error));
+  card.delete();
+  popupConfirmDelete.close();
 };
+
+const popupConfirmDelete = new PopupConfirm(
+  ".popup_type_confirm",
+  handleConfirmFormSubmit,
+);
+popupConfirmDelete.setEventListeners();
+
+function openConfirmPopup(card) {
+  popupConfirmDelete.open(card);
+}
+
+async function likeCard(card) {
+  const res = await api
+    .likeCard(card.getId())
+    .catch((error) => console.log(error));
+  return res.likes;
+}
+
+async function unlikeCard(card) {
+  const res = await api
+    .unlikeCard(card.getId())
+    .catch((error) => console.log(error));
+  return res.likes;
+}
+
+const createCard = (cardData) => {
+  const card = new Card(
+    cardData,
+    ".template-element",
+    () => openCardViewPopup(cardData),
+    () => openConfirmPopup(card),
+    () => likeCard(card),
+    () => unlikeCard(card),
+  );
+  return card.generateCard();
+};
+
+const initialCards = api.getInitialCards().then((result) => {
+  return result.map(({ name, link, likes, owner, _id: id }) => {
+    return { name, link, likes, owner, id };
+  });
+});
 
 const cardSection = new Section(
   {
-    items: initialCards,
+    items: await initialCards,
     renderer: (cardData) => {
+      const { name, link, likes, owner, id } = cardData;
+      const isLikedByCurrentUser = likes.some(
+        (like) => like._id === userInfo.getUserInfo().id,
+      );
       const card = createCard({
-        title: cardData.name,
-        link: cardData.link,
+        title: name,
+        link,
+        likes,
+        ownerId: owner._id,
+        id,
+        isLikedByCurrentUser,
+        userId: userInfo.getUserInfo().id,
       });
       cardSection.addItem(card);
     },
@@ -46,10 +108,15 @@ const cardSection = new Section(
   cardElementsList,
 );
 
-const handleEditProfileFormSubmit = (formData) => {
+const handleEditProfileFormSubmit = async (formData) => {
+  const profileName = formData["profile-name"];
+  const profileBio = formData["profile-bio"];
+  await api
+    .updateProfile(profileName, profileBio)
+    .catch((error) => console.log(error));
   userInfo.setUserInfo({
-    name: formData["profile-name"],
-    bio: formData["profile-bio"],
+    name: profileName,
+    bio: profileBio,
   });
   popupEditProfile.close();
 };
@@ -69,10 +136,13 @@ const renderEditProfileInputs = () => {
   popupEditProfile.setInputValues(formData);
 };
 
-const handleAddCardFormSubmit = (formData) => {
+const handleAddCardFormSubmit = async (formData) => {
+  const name = formData["card-place-name"];
+  const link = formData["card-image-link"];
+  await api.addCard(name, link).catch((error) => console.log(error));
   const card = createCard({
-    title: formData["card-place-name"],
-    link: formData["card-image-link"],
+    title: name,
+    link: link,
   });
   cardSection.prependItem(card);
   popupAddCard.close();
@@ -107,15 +177,11 @@ cardSection.render();
 
 const formValidators = {};
 
-// Включение валидации
 const enableValidation = (settings) => {
   const formList = Array.from(document.querySelectorAll(settings.formSelector));
   formList.forEach((formElement) => {
     const validator = new FormValidator(settings, formElement);
-    // получаем данные из атрибута `name` у формы
     const formName = formElement.getAttribute("name");
-
-    // вот тут в объект записываем под именем формы
     formValidators[formName] = validator;
     validator.enableValidation();
   });
