@@ -16,7 +16,6 @@ import { FormValidator } from "../scripts/components/FormValidator.js";
 import "./index.css";
 import { api } from "../scripts/components/Api";
 import { PopupConfirm } from "../scripts/components/PopupConfirm.js";
-import { PopupUpdateAvatar } from "../scripts/components/PopupUpdateAvatar";
 
 const logo = new URL("../images/logo.svg", import.meta.url);
 
@@ -106,7 +105,14 @@ const cardSection = new Section(
 const handleEditProfileFormSubmit = async (formData) => {
   const profileName = formData["profile-name"];
   const profileBio = formData["profile-bio"];
-  await api.updateProfile(profileName, profileBio);
+  popupEditProfile.renderLoading(true);
+  try {
+    await api.updateProfile(profileName, profileBio);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    popupEditProfile.renderLoading(false);
+  }
   userInfo.setUserInfo({
     name: profileName,
     bio: profileBio,
@@ -117,6 +123,7 @@ const handleEditProfileFormSubmit = async (formData) => {
 const popupEditProfile = new PopupWithForm(
   ".popup_type_edit-profile",
   handleEditProfileFormSubmit,
+  "Сохранить",
 );
 popupEditProfile.setEventListeners();
 
@@ -132,7 +139,14 @@ const renderEditProfileInputs = () => {
 const handleAddCardFormSubmit = async (formData) => {
   const name = formData["card-place-name"];
   const link = formData["card-image-link"];
-  await api.addCard(name, link);
+  popupAddCard.renderLoading(true);
+  try {
+    await api.addCard(name, link);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    popupAddCard.renderLoading(false);
+  }
   const card = createCard({
     title: name,
     link: link,
@@ -144,6 +158,7 @@ const handleAddCardFormSubmit = async (formData) => {
 const popupAddCard = new PopupWithForm(
   ".popup_type_add-card",
   handleAddCardFormSubmit,
+  "Создать",
 );
 popupAddCard.setEventListeners();
 
@@ -154,14 +169,22 @@ const openCardViewPopup = (cardData) => {
   popupCardView.open(cardData.link, cardData.title);
 };
 const handleUpdateAvatarFormSubmit = async (formData) => {
-  const link = formData["avatar-link"];
-  avatarElement.src = link;
-  await api.updateAvatar(link);
-  popupUpdateAvatar.close();
+  popupUpdateAvatar.renderLoading(true);
+  try {
+    const link = formData["avatar-link"];
+    avatarElement.src = link;
+    await api.updateAvatar(link);
+    popupUpdateAvatar.close();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    popupUpdateAvatar.renderLoading(false);
+  }
 };
-const popupUpdateAvatar = new PopupUpdateAvatar(
+const popupUpdateAvatar = new PopupWithForm(
   ".popup_type_update-avatar",
   handleUpdateAvatarFormSubmit,
+  "Сохранить",
 );
 popupUpdateAvatar.setEventListeners();
 
