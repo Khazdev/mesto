@@ -27,18 +27,14 @@ const userInfo = new UserInfo({
 });
 
 async function renderUserInfo() {
-  const {
-    name,
-    about: bio,
-    _id: id,
-  } = await api.getUserInfo().catch((error) => console.log(error));
+  const { name, about: bio, _id: id } = await api.getUserInfo();
   userInfo.setUserInfo({ name, bio, id });
 }
 
 renderUserInfo().catch((error) => console.log(error));
 
 const handleConfirmFormSubmit = async (card) => {
-  await api.deleteCard(card.getId()).catch((error) => console.log(error));
+  await api.deleteCard(card.getId());
   card.delete();
   popupConfirmDelete.close();
 };
@@ -54,16 +50,12 @@ function openConfirmPopup(card) {
 }
 
 async function likeCard(card) {
-  const res = await api
-    .likeCard(card.getId())
-    .catch((error) => console.log(error));
+  const res = await api.likeCard(card.getId());
   return res.likes;
 }
 
 async function unlikeCard(card) {
-  const res = await api
-    .unlikeCard(card.getId())
-    .catch((error) => console.log(error));
+  const res = await api.unlikeCard(card.getId());
   return res.likes;
 }
 
@@ -111,9 +103,7 @@ const cardSection = new Section(
 const handleEditProfileFormSubmit = async (formData) => {
   const profileName = formData["profile-name"];
   const profileBio = formData["profile-bio"];
-  await api
-    .updateProfile(profileName, profileBio)
-    .catch((error) => console.log(error));
+  await api.updateProfile(profileName, profileBio);
   userInfo.setUserInfo({
     name: profileName,
     bio: profileBio,
@@ -139,7 +129,7 @@ const renderEditProfileInputs = () => {
 const handleAddCardFormSubmit = async (formData) => {
   const name = formData["card-place-name"];
   const link = formData["card-image-link"];
-  await api.addCard(name, link).catch((error) => console.log(error));
+  await api.addCard(name, link);
   const card = createCard({
     title: name,
     link: link,
