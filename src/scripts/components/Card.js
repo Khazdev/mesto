@@ -4,6 +4,8 @@ export class Card {
     templateSelector,
     openImagePopupCallback,
     openConfirmPopupCallback,
+    likeCardCallBack,
+    unlikeCardCallBack,
   ) {
     this._data = data;
     this._templateSelector = templateSelector;
@@ -11,6 +13,9 @@ export class Card {
     this._openPopupCallback = openImagePopupCallback;
     this._openConfirmPopupCallback = openConfirmPopupCallback;
     this._id = data.id;
+    this._likeCardCallBack = likeCardCallBack;
+    this._unlikeCardCallBack = unlikeCardCallBack;
+    this._isLikedByCurrentUser = data.isLikedByCurrentUser;
   }
 
   _getTemplate() {
@@ -22,13 +27,26 @@ export class Card {
 
   _setEventListeners() {
     const likeCounter = this._element.querySelector(".elements__like-counter");
-    likeCounter.textContent = this._data.likes;
+    likeCounter.textContent = this._data.likes.length;
     const likeButton = this._element.querySelector(".elements__like-button");
-    likeButton.addEventListener("click", this._toggleLike);
+    if (this._isLikedByCurrentUser) {
+      likeButton.classList.add("elements__like-button_active");
+    }
+    likeButton.addEventListener("click", async (event) => {
+      let currentLikeCount;
+      if (this._isLikedByCurrentUser) {
+        currentLikeCount = await this._unlikeCardCallBack();
+      } else {
+        currentLikeCount = await this._likeCardCallBack();
+      }
+      this._isLikedByCurrentUser = !this._isLikedByCurrentUser;
+      this._toggleLike(event);
+      likeCounter.textContent = currentLikeCount.length;
+    });
 
     const deleteButton = this._element.querySelector(".elements__del-button");
 
-    if (!this._data.isOwner) {
+    if (!this._data.ownerId === this._data.userId) {
       deleteButton.remove();
     } else {
       deleteButton.addEventListener("click", this._openConfirmPopupCallback);

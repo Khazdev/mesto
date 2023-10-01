@@ -50,12 +50,24 @@ function openConfirmPopup(card) {
   popupConfirmDelete.open(card);
 }
 
+async function likeCard(card) {
+  return await api.likeCard(card.getId()).then((res) => {
+    return res.likes;
+  });
+}
+async function unlikeCard(card) {
+  return await api.unlikeCard(card.getId()).then((res) => {
+    return res.likes;
+  });
+}
 const createCard = (cardData) => {
   const card = new Card(
     cardData,
     ".template-element",
     () => openCardViewPopup(cardData),
     () => openConfirmPopup(card),
+    () => likeCard(card),
+    () => unlikeCard(card),
   );
   return card.generateCard();
 };
@@ -65,23 +77,52 @@ const initialCards = api.getInitialCards().then((result) => {
     return { name, link, likes, owner, id };
   });
 });
+console.log(initialCards);
 
 const cardSection = new Section(
   {
     items: await initialCards,
     renderer: (cardData) => {
+      const { name, link, likes, owner, id } = cardData;
+      const isLikedByCurrentUser = likes.some(
+        (like) => like._id === userInfo.getUserInfo().id,
+      );
       const card = createCard({
-        title: cardData.name,
-        link: cardData.link,
-        likes: (cardData.likes = 0),
-        isOwner: cardData.owner._id === userInfo.getUserInfo().id,
-        id: cardData.id,
+        title: name,
+        link,
+        likes,
+        ownerId: owner._id,
+        id,
+        isLikedByCurrentUser,
+        userId: userInfo.getUserInfo().id,
       });
       cardSection.addItem(card);
     },
   },
   cardElementsList,
 );
+//
+// const cardSection = new Section(
+//   {
+//     items: await initialCards,
+//     renderer: (cardData) => {
+//       const card = createCard({
+//         title: cardData.name,
+//         link: cardData.link,
+//         likes: cardData.likes,
+//         // isOwner: cardData.owner._id === userInfo.getUserInfo().id,
+//         ownerId: cardData.owner._id,
+//         id: cardData.id,
+//         isLikedByCurrentUser: cardData.likes.find((like) => {
+//           return like._id === userInfo.getUserInfo().id;
+//         }),
+//         userId: userInfo.getUserInfo().id,
+//       });
+//       cardSection.addItem(card);
+//     },
+//   },
+//   cardElementsList,
+// );
 
 const handleEditProfileFormSubmit = async (formData) => {
   const profileName = formData["profile-name"];

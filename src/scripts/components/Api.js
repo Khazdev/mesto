@@ -62,7 +62,28 @@ class Api {
       });
   }
 
-  // другие методы работы с API
+  likeCard(id) {
+    return fetch(`${this.baseurl}/cards/${id}/likes`, {
+      method: "PUT",
+      headers: this.headers,
+    })
+      .then(this._checkResponse)
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  unlikeCard(id) {
+    return fetch(`${this.baseurl}/cards/${id}/likes`, {
+      method: "DELETE",
+      headers: this.headers,
+    })
+      .then(this._checkResponse)
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   _checkResponse(res) {
     if (res.ok) {
       return res.json();
