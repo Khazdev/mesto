@@ -16,11 +16,13 @@
     </header>
     <main class="content">
       <section class="profile">
-        <img
-          class="profile__avatar"
-          src="<%=require('./images/avatar.jpg')%>"
-          alt="Фотография Жак-Ива Кусто"
-        />
+        <div class="profile__avatar-container">
+          <img
+            class="profile__avatar"
+            src="<%=require('./images/avatar.jpg')%>"
+            alt="Фотография Жак-Ива Кусто"
+          />
+        </div>
         <div class="profile__info">
           <h1 class="profile__name">Жак-Ив Кусто</h1>
           <button
@@ -165,7 +167,7 @@
         ></button>
         <form
           class="popup__form popup__form_confirm"
-          name="add-card"
+          name="confirm"
           method="get"
         >
           <h2 class="popup__title">Вы уверены?</h2>
@@ -175,6 +177,43 @@
             disabled
           >
             Да
+          </button>
+        </form>
+      </div>
+    </section>
+    <section class="popup popup_type_update-avatar" aria-label="обновление аватарки">
+      <div class="popup__container">
+        <button
+          class="popup__close"
+          type="button"
+          aria-label="кнопка закрыть попап"
+        ></button>
+        <h2 class="popup__title">Обновить аватар</h2>
+
+        <form
+          class="popup__form popup__form_avatar"
+          name="update-avatar"
+          method="get"
+        >
+          <div class="popup__inputs">
+            <div>
+              <input
+                class="popup__input popup__input_type_avatar-link"
+                type="url"
+                placeholder="Ссылка на картинку"
+                name="avatar-link"
+                id="avatar-link"
+                required
+              />
+              <span id="avatar-link-error" class="popup__error"></span>
+            </div>
+          </div>
+          <button
+            class="popup__save-button popup__save-button_update-avatar"
+            type="submit"
+            disabled
+          >
+            Сохранить
           </button>
         </form>
       </div>

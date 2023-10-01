@@ -84,6 +84,20 @@ class Api {
       });
   }
 
+  updateAvatar(avatarLink) {
+    return fetch(`${this.baseurl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this.headers,
+      body: JSON.stringify({
+        avatar: avatarLink,
+      }),
+    })
+      .then(this._checkResponse)
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   _checkResponse(res) {
     if (res.ok) {
       return res.json();

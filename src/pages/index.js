@@ -1,5 +1,6 @@
 import { Card } from "../scripts/components/Card.js";
 import {
+  avatarContainer,
   avatarElement,
   cardAddButton,
   cardElementsList,
@@ -16,9 +17,8 @@ import "./index.css";
 import { api } from "../scripts/components/Api";
 import { PopupConfirm } from "../scripts/components/PopupConfirm.js";
 
-const avatar = new URL("../images/avatar.jpg", import.meta.url);
 const logo = new URL("../images/logo.svg", import.meta.url);
-avatarElement.src = avatar.href;
+
 logoElement.src = logo.href;
 
 const userInfo = new UserInfo({
@@ -27,18 +27,16 @@ const userInfo = new UserInfo({
 });
 
 async function renderUserInfo() {
-  const {
-    name,
-    about: bio,
-    _id: id,
-  } = await api.getUserInfo().catch((error) => console.log(error));
-  userInfo.setUserInfo({ name, bio, id });
+  const { name, about: bio, _id: id, avatar } = await api.getUserInfo();
+
+  userInfo.setUserInfo({ name, bio, id, avatar });
+  avatarElement.src = avatar;
 }
 
 renderUserInfo().catch((error) => console.log(error));
 
 const handleConfirmFormSubmit = async (card) => {
-  await api.deleteCard(card.getId()).catch((error) => console.log(error));
+  await api.deleteCard(card.getId());
   card.delete();
   popupConfirmDelete.close();
 };
@@ -54,16 +52,12 @@ function openConfirmPopup(card) {
 }
 
 async function likeCard(card) {
-  const res = await api
-    .likeCard(card.getId())
-    .catch((error) => console.log(error));
+  const res = await api.likeCard(card.getId());
   return res.likes;
 }
 
 async function unlikeCard(card) {
-  const res = await api
-    .unlikeCard(card.getId())
-    .catch((error) => console.log(error));
+  const res = await api.unlikeCard(card.getId());
   return res.likes;
 }
 
@@ -111,9 +105,14 @@ const cardSection = new Section(
 const handleEditProfileFormSubmit = async (formData) => {
   const profileName = formData["profile-name"];
   const profileBio = formData["profile-bio"];
-  await api
-    .updateProfile(profileName, profileBio)
-    .catch((error) => console.log(error));
+  popupEditProfile.renderLoading(true);
+  try {
+    await api.updateProfile(profileName, profileBio);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    popupEditProfile.renderLoading(false);
+  }
   userInfo.setUserInfo({
     name: profileName,
     bio: profileBio,
@@ -124,6 +123,7 @@ const handleEditProfileFormSubmit = async (formData) => {
 const popupEditProfile = new PopupWithForm(
   ".popup_type_edit-profile",
   handleEditProfileFormSubmit,
+  "Сохранить",
 );
 popupEditProfile.setEventListeners();
 
@@ -139,7 +139,14 @@ const renderEditProfileInputs = () => {
 const handleAddCardFormSubmit = async (formData) => {
   const name = formData["card-place-name"];
   const link = formData["card-image-link"];
-  await api.addCard(name, link).catch((error) => console.log(error));
+  popupAddCard.renderLoading(true);
+  try {
+    await api.addCard(name, link);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    popupAddCard.renderLoading(false);
+  }
   const card = createCard({
     title: name,
     link: link,
@@ -151,6 +158,7 @@ const handleAddCardFormSubmit = async (formData) => {
 const popupAddCard = new PopupWithForm(
   ".popup_type_add-card",
   handleAddCardFormSubmit,
+  "Создать",
 );
 popupAddCard.setEventListeners();
 
@@ -160,6 +168,29 @@ popupCardView.setEventListeners();
 const openCardViewPopup = (cardData) => {
   popupCardView.open(cardData.link, cardData.title);
 };
+const handleUpdateAvatarFormSubmit = async (formData) => {
+  popupUpdateAvatar.renderLoading(true);
+  try {
+    const link = formData["avatar-link"];
+    avatarElement.src = link;
+    await api.updateAvatar(link);
+    popupUpdateAvatar.close();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    popupUpdateAvatar.renderLoading(false);
+  }
+};
+const popupUpdateAvatar = new PopupWithForm(
+  ".popup_type_update-avatar",
+  handleUpdateAvatarFormSubmit,
+  "Сохранить",
+);
+popupUpdateAvatar.setEventListeners();
+
+avatarContainer.addEventListener("click", () => {
+  popupUpdateAvatar.open();
+});
 
 const handleEditProfileButtonClick = () => {
   renderEditProfileInputs();

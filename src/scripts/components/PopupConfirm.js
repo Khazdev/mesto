@@ -1,4 +1,3 @@
-// src/scripts/components/PopupConfirmDelete.js
 import { Popup } from "./Popup.js";
 
 export class PopupConfirm extends Popup {
@@ -7,10 +6,6 @@ export class PopupConfirm extends Popup {
     this._form = this._popup.querySelector(".popup__form");
     this._submitCallback = submitCallback;
     this._currentCard = null;
-  }
-
-  setEventListeners() {
-    super.setEventListeners();
   }
 
   open(card) {
