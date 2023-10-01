@@ -2,7 +2,7 @@
   position: relative;
 }
 
-.profile__avatar-container::after {
+.profile__avatar-container::before {
   cursor: pointer;
   content: "";
   position: absolute;
@@ -18,6 +18,6 @@
   background-position: center;
 }
 
-.profile__avatar-container:hover::after {
+.profile__avatar-container:hover::before {
   opacity: 0.8;
 }

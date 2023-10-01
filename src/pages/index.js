@@ -1,5 +1,6 @@
 import { Card } from "../scripts/components/Card.js";
 import {
+  avatarContainer,
   avatarElement,
   cardAddButton,
   cardElementsList,
@@ -15,10 +16,10 @@ import { FormValidator } from "../scripts/components/FormValidator.js";
 import "./index.css";
 import { api } from "../scripts/components/Api";
 import { PopupConfirm } from "../scripts/components/PopupConfirm.js";
+import { PopupUpdateAvatar } from "../scripts/components/PopupUpdateAvatar";
 
-const avatar = new URL("../images/avatar.jpg", import.meta.url);
 const logo = new URL("../images/logo.svg", import.meta.url);
-avatarElement.src = avatar.href;
+
 logoElement.src = logo.href;
 
 const userInfo = new UserInfo({
@@ -27,8 +28,10 @@ const userInfo = new UserInfo({
 });
 
 async function renderUserInfo() {
-  const { name, about: bio, _id: id } = await api.getUserInfo();
-  userInfo.setUserInfo({ name, bio, id });
+  const { name, about: bio, _id: id, avatar } = await api.getUserInfo();
+
+  userInfo.setUserInfo({ name, bio, id, avatar });
+  avatarElement.src = avatar;
 }
 
 renderUserInfo().catch((error) => console.log(error));
@@ -150,6 +153,21 @@ popupCardView.setEventListeners();
 const openCardViewPopup = (cardData) => {
   popupCardView.open(cardData.link, cardData.title);
 };
+const handleUpdateAvatarFormSubmit = async (formData) => {
+  const link = formData["avatar-link"];
+  avatarElement.src = link;
+  await api.updateAvatar(link);
+  popupUpdateAvatar.close();
+};
+const popupUpdateAvatar = new PopupUpdateAvatar(
+  ".popup_type_update-avatar",
+  handleUpdateAvatarFormSubmit,
+);
+popupUpdateAvatar.setEventListeners();
+
+avatarContainer.addEventListener("click", () => {
+  popupUpdateAvatar.open();
+});
 
 const handleEditProfileButtonClick = () => {
   renderEditProfileInputs();
