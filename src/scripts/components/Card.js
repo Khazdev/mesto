@@ -15,7 +15,6 @@ export class Card {
     this._id = data.id;
     this._likeCardCallBack = likeCardCallBack;
     this._unlikeCardCallBack = unlikeCardCallBack;
-    this._isLikedByCurrentUser = data.isLikedByCurrentUser;
   }
 
   _getTemplate() {
@@ -28,7 +27,9 @@ export class Card {
   _setEventListeners() {
     const likeCounter = this._element.querySelector(".elements__like-counter");
     likeCounter.textContent = this._data.likes.length;
-
+    this._isLikedByCurrentUser = this._data.likes.find(
+      (like) => like._id === this._data.userId,
+    );
     const likeButton = this._element.querySelector(".elements__like-button");
     if (this._isLikedByCurrentUser) {
       likeButton.classList.add("elements__like-button_active");

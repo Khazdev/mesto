@@ -5,69 +5,73 @@ class Api {
     this.headers = options.headers;
   }
 
+  _request(uri, options) {
+    return fetch(this.baseurl + uri, options).then(this._checkResponse);
+  }
+
   getInitialCards() {
-    return fetch(`${this.baseurl}/cards`, {
+    return this._request("/cards", {
       headers: this.headers,
-    }).then(this._checkResponse);
+    });
   }
 
   getUserInfo() {
-    return fetch(`${this.baseurl}/users/me`, {
+    return this._request("/users/me", {
       headers: this.headers,
-    }).then(this._checkResponse);
+    });
   }
 
   updateProfile(name, about) {
-    return fetch(`${this.baseurl}/users/me`, {
+    return this._request("/users/me", {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
         name: name,
         about: about,
       }),
-    }).then(this._checkResponse);
+    });
   }
 
   addCard(name, link) {
-    return fetch(`${this.baseurl}/cards`, {
+    return this._request("/cards", {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify({
         name: name,
         link: link,
       }),
-    }).then(this._checkResponse);
+    });
   }
 
   deleteCard(id) {
-    return fetch(`${this.baseurl}/cards/${id}`, {
+    return this._request(`/cards/${id}`, {
       method: "DELETE",
       headers: this.headers,
-    }).then(this._checkResponse);
+    });
   }
 
   likeCard(id) {
-    return fetch(`${this.baseurl}/cards/${id}/likes`, {
+    return this._request(`/cards/${id}/likes`, {
       method: "PUT",
       headers: this.headers,
-    }).then(this._checkResponse);
+    });
   }
 
   unlikeCard(id) {
-    return fetch(`${this.baseurl}/cards/${id}/likes`, {
+    return this._request(`/cards/${id}/likes`, {
       method: "DELETE",
       headers: this.headers,
-    }).then(this._checkResponse);
+    });
   }
 
   updateAvatar(avatarLink) {
-    return fetch(`${this.baseurl}/users/me/avatar`, {
+    return this._request("/users/me/avatar", {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
         avatar: avatarLink,
       }),
-    }).then(this._checkResponse);
+    });
   }
 
   _checkResponse(res) {
