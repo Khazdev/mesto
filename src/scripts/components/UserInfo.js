@@ -15,7 +15,8 @@ export class UserInfo {
     };
   }
 
-  setUserInfo({ name, bio, id, avatar }) {
+  setUserInfo(userData) {
+    const {name, about: bio, _id: id, avatar} = userData;
     this._name.textContent = name;
     this._bio.textContent = bio;
     this._id = id;

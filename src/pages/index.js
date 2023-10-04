@@ -67,8 +67,7 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
   // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
   .then(([userData, cards]) => {
     // тут установка данных пользователя
-    const {name, about: bio, _id: userId, avatar} = userData;
-    userInfo.setUserInfo({name, bio, id: userId, avatar});
+    userInfo.setUserInfo(userData);
     // и тут отрисовка карточек
     cards.forEach((cardData) => {
       const cardElement = createCardElement(cardData);
@@ -137,11 +136,8 @@ const handleEditProfileFormSubmit = (formData) => {
   popupEditProfile.renderLoading(true);
 
   function makeRequest() {
-    return api.updateProfile(profileName, profileBio).then(() => {
-      userInfo.setUserInfo({
-        name: profileName,
-        bio: profileBio,
-      });
+    return api.updateProfile(profileName, profileBio).then((res) => {
+      userInfo.setUserInfo(res);
     });
   }
 
@@ -194,9 +190,8 @@ const openCardViewPopup = (cardData) => {
 const handleUpdateAvatarFormSubmit = (formData) => {
   function makeRequest() {
     const link = formData["avatar-link"];
-    return api.updateAvatar(link).then(() => {
-      const {avatar} = link;
-      userInfo.setUserInfo({avatar})
+    return api.updateAvatar(link).then((res) => {
+      userInfo.setUserInfo(res)
     });
   }
 
