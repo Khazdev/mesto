@@ -20,4 +20,12 @@ export class PopupConfirm extends Popup {
       this._submitCallback(this._currentCard);
     });
   }
+
+  renderLoading(isLoading, loadingText) {
+    if (isLoading) {
+      this._submitButton.textContent = loadingText;
+    } else {
+      this._submitButton.textContent = this._submitButtonText;
+    }
+  }
 }

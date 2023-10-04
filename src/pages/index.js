@@ -1,21 +1,20 @@
-import { Card } from "../scripts/components/Card.js";
+import {Card} from "../scripts/components/Card.js";
 import {
   avatarContainer,
-  avatarElement,
   cardAddButton,
   cardElementsList,
   logoElement,
   profileEditButton,
   settings,
 } from "../scripts/utils/constants.js";
-import { Section } from "../scripts/components/Section.js";
-import { PopupWithImage } from "../scripts/components/PopupWithImage.js";
-import { PopupWithForm } from "../scripts/components/PopupWithForm.js";
-import { UserInfo } from "../scripts/components/UserInfo.js";
-import { FormValidator } from "../scripts/components/FormValidator.js";
+import {Section} from "../scripts/components/Section.js";
+import {PopupWithImage} from "../scripts/components/PopupWithImage.js";
+import {PopupWithForm} from "../scripts/components/PopupWithForm.js";
+import {UserInfo} from "../scripts/components/UserInfo.js";
+import {FormValidator} from "../scripts/components/FormValidator.js";
 import "./index.css";
-import { api } from "../scripts/components/Api";
-import { PopupConfirm } from "../scripts/components/PopupConfirm.js";
+import {api} from "../scripts/components/Api";
+import {PopupConfirm} from "../scripts/components/PopupConfirm.js";
 
 const logo = new URL("../images/logo.svg", import.meta.url);
 
@@ -26,23 +25,82 @@ const userInfo = new UserInfo({
   bioSelector: ".profile__bio",
 });
 
-async function renderUserInfo() {
-  const { name, about: bio, _id: id, avatar } = await api.getUserInfo();
+const createCard = (cardData) => {
+  const card = new Card(
+    cardData,
+    ".template-element",
+    () => openCardViewPopup(cardData),
+    () => openConfirmPopup(card),
+    () => likeCard(card),
+    () => unlikeCard(card),
+  );
+  console.log(card)
+  return card.generateCard();
+};
 
-  userInfo.setUserInfo({ name, bio, id, avatar });
-  avatarElement.src = avatar;
+
+function createCardElement(cardData) {
+  const {name, link, likes, owner, _id: id} = cardData;
+  return  createCard({
+    title: name,
+    link,
+    likes,
+    ownerId: owner._id,
+    id,
+    userId: userInfo.getUserInfo().id,
+  });
+
 }
 
-renderUserInfo().catch((error) => console.log(error));
+const cardSection = new Section(
+  { items: [],
+    renderer: (cardData) => {
+      const cardElement = createCardElement(cardData);
+      cardSection.addItem(cardElement);
+    },
+  },
+  cardElementsList,
+);
+cardSection.render();
 
-async function handleConfirmFormSubmit(card) {
-  await api
-    .deleteCard(card.getId())
-    .then((res) => {
-      card.delete();
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
+  .then(([userData, cards]) => {
+    // тут установка данных пользователя
+    const {name, about: bio, _id: userId, avatar} = userData;
+    userInfo.setUserInfo({name, bio, id: userId, avatar});
+    // и тут отрисовка карточек
+    cards.forEach((cardData) => {
+      const cardElement = createCardElement(cardData);
+      cardSection.addItem(cardElement);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+function handleSubmit(request, popupInstance, loadingText = "Сохранение...") {
+
+  popupInstance.renderLoading(true, loadingText);
+  request()
+    .then(() => {
+      popupInstance.close()
     })
-    .catch((error) => console.log(error));
-  popupConfirmDelete.close();
+    .catch((err) => {
+      console.error(`Ошибка: ${err}`);
+    })
+    .finally(() => {
+      popupInstance.renderLoading(false);
+    });
+}
+
+function handleConfirmFormSubmit(card) {
+    api.deleteCard(card.getId())
+      .then(() => {
+        card.delete();
+        popupConfirmDelete.close();
+      })
+      .catch((error) => console.log(error));
 }
 
 const popupConfirmDelete = new PopupConfirm(
@@ -55,8 +113,8 @@ function openConfirmPopup(card) {
   popupConfirmDelete.open(card);
 }
 
-async function likeCard(card) {
-  return await api
+function likeCard(card) {
+  return api
     .likeCard(card.getId())
     .then((res) => {
       return res.likes;
@@ -64,8 +122,8 @@ async function likeCard(card) {
     .catch((error) => console.log(error));
 }
 
-async function unlikeCard(card) {
-  return await api
+function unlikeCard(card) {
+  return api
     .unlikeCard(card.getId())
     .then((res) => {
       return res.likes;
@@ -73,63 +131,21 @@ async function unlikeCard(card) {
     .catch((error) => console.log(error));
 }
 
-const createCard = (cardData) => {
-  const card = new Card(
-    cardData,
-    ".template-element",
-    () => openCardViewPopup(cardData),
-    () => openConfirmPopup(card),
-    () => likeCard(card),
-    () => unlikeCard(card),
-  );
-  return card.generateCard();
-};
-
-const initialCards = api.getInitialCards().then((result) => {
-  return result.map(({ name, link, likes, owner, _id: id }) => {
-    return { name, link, likes, owner, id };
-  });
-});
-
-const cardSection = new Section(
-  {
-    items: await initialCards,
-    renderer: (cardData) => {
-      const { name, link, likes, owner, id } = cardData;
-      const isLikedByCurrentUser = likes.some(
-        (like) => like._id === userInfo.getUserInfo().id,
-      );
-      const card = createCard({
-        title: name,
-        link,
-        likes,
-        ownerId: owner._id,
-        id,
-        isLikedByCurrentUser,
-        userId: userInfo.getUserInfo().id,
-      });
-      cardSection.addItem(card);
-    },
-  },
-  cardElementsList,
-);
-
-const handleEditProfileFormSubmit = async (formData) => {
+const handleEditProfileFormSubmit = (formData) => {
   const profileName = formData["profile-name"];
   const profileBio = formData["profile-bio"];
   popupEditProfile.renderLoading(true);
-  try {
-    await api.updateProfile(profileName, profileBio);
-    userInfo.setUserInfo({
-      name: profileName,
-      bio: profileBio,
+
+  function makeRequest() {
+    return api.updateProfile(profileName, profileBio).then(() => {
+      userInfo.setUserInfo({
+        name: profileName,
+        bio: profileBio,
+      });
     });
-  } catch (error) {
-    console.log(error);
-  } finally {
-    popupEditProfile.renderLoading(false);
   }
-  popupEditProfile.close();
+
+  handleSubmit(makeRequest, popupEditProfile);
 };
 
 const popupEditProfile = new PopupWithForm(
@@ -140,7 +156,7 @@ const popupEditProfile = new PopupWithForm(
 popupEditProfile.setEventListeners();
 
 const renderEditProfileInputs = () => {
-  const { bio, name } = userInfo.getUserInfo();
+  const {bio, name} = userInfo.getUserInfo();
   const formData = {
     "profile-name": name,
     "profile-bio": bio,
@@ -148,27 +164,17 @@ const renderEditProfileInputs = () => {
   popupEditProfile.setInputValues(formData);
 };
 
-const handleAddCardFormSubmit = async (formData) => {
-  const name = formData["card-place-name"];
-  const link = formData["card-image-link"];
-  popupAddCard.renderLoading(true);
-  try {
-    const { likes, owner, _id: id } = await api.addCard(name, link);
-    const card = createCard({
-      title: name,
-      link,
-      likes,
-      ownerId: owner._id,
-      id,
-      userId: userInfo.getUserInfo().id,
+const handleAddCardFormSubmit = (formData) => {
+  function makeRequest() {
+    const name = formData["card-place-name"];
+    const link = formData["card-image-link"];
+    return api.addCard(name, link).then(res => {
+      const cardElement = createCardElement(res);
+      cardSection.prependItem(cardElement);
     });
-    cardSection.prependItem(card);
-  } catch (error) {
-    console.log(error);
-  } finally {
-    popupAddCard.renderLoading(false);
   }
-  popupAddCard.close();
+
+  handleSubmit(makeRequest, popupAddCard);
 };
 
 const popupAddCard = new PopupWithForm(
@@ -184,18 +190,17 @@ popupCardView.setEventListeners();
 const openCardViewPopup = (cardData) => {
   popupCardView.open(cardData.link, cardData.title);
 };
-const handleUpdateAvatarFormSubmit = async (formData) => {
-  popupUpdateAvatar.renderLoading(true);
-  try {
+
+const handleUpdateAvatarFormSubmit = (formData) => {
+  function makeRequest() {
     const link = formData["avatar-link"];
-    avatarElement.src = link;
-    await api.updateAvatar(link);
-    popupUpdateAvatar.close();
-  } catch (error) {
-    console.log(error);
-  } finally {
-    popupUpdateAvatar.renderLoading(false);
+    return api.updateAvatar(link).then(() => {
+      const {avatar} = link;
+      userInfo.setUserInfo({avatar})
+    });
   }
+
+  handleSubmit(makeRequest, popupUpdateAvatar)
 };
 const popupUpdateAvatar = new PopupWithForm(
   ".popup_type_update-avatar",
@@ -219,8 +224,6 @@ const handleCardAddButtonClick = () => {
 
 profileEditButton.addEventListener("click", handleEditProfileButtonClick);
 cardAddButton.addEventListener("click", handleCardAddButtonClick);
-
-cardSection.render();
 
 const formValidators = {};
 
