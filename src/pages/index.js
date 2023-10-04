@@ -1,4 +1,4 @@
-import {Card} from "../scripts/components/Card.js";
+import { Card } from "../scripts/components/Card.js";
 import {
   avatarContainer,
   cardAddButton,
@@ -7,14 +7,14 @@ import {
   profileEditButton,
   settings,
 } from "../scripts/utils/constants.js";
-import {Section} from "../scripts/components/Section.js";
-import {PopupWithImage} from "../scripts/components/PopupWithImage.js";
-import {PopupWithForm} from "../scripts/components/PopupWithForm.js";
-import {UserInfo} from "../scripts/components/UserInfo.js";
-import {FormValidator} from "../scripts/components/FormValidator.js";
+import { Section } from "../scripts/components/Section.js";
+import { PopupWithImage } from "../scripts/components/PopupWithImage.js";
+import { PopupWithForm } from "../scripts/components/PopupWithForm.js";
+import { UserInfo } from "../scripts/components/UserInfo.js";
+import { FormValidator } from "../scripts/components/FormValidator.js";
 import "./index.css";
-import {api} from "../scripts/components/Api";
-import {PopupConfirm} from "../scripts/components/PopupConfirm.js";
+import { api } from "../scripts/components/Api.js";
+import { PopupConfirm } from "../scripts/components/PopupConfirm.js";
 
 const logo = new URL("../images/logo.svg", import.meta.url);
 
@@ -34,14 +34,12 @@ const createCard = (cardData) => {
     () => likeCard(card),
     () => unlikeCard(card),
   );
-  console.log(card)
   return card.generateCard();
 };
 
-
 function createCardElement(cardData) {
-  const {name, link, likes, owner, _id: id} = cardData;
-  return  createCard({
+  const { name, link, likes, owner, _id: id } = cardData;
+  return createCard({
     title: name,
     link,
     likes,
@@ -49,11 +47,11 @@ function createCardElement(cardData) {
     id,
     userId: userInfo.getUserInfo().id,
   });
-
 }
 
 const cardSection = new Section(
-  { items: [],
+  {
+    items: [],
     renderer: (cardData) => {
       const cardElement = createCardElement(cardData);
       cardSection.addItem(cardElement);
@@ -79,11 +77,10 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
   });
 
 function handleSubmit(request, popupInstance, loadingText = "Сохранение...") {
-
   popupInstance.renderLoading(true, loadingText);
   request()
     .then(() => {
-      popupInstance.close()
+      popupInstance.close();
     })
     .catch((err) => {
       console.error(`Ошибка: ${err}`);
@@ -94,12 +91,13 @@ function handleSubmit(request, popupInstance, loadingText = "Сохранени�
 }
 
 function handleConfirmFormSubmit(card) {
-    api.deleteCard(card.getId())
-      .then(() => {
-        card.delete();
-        popupConfirmDelete.close();
-      })
-      .catch((error) => console.log(error));
+  api
+    .deleteCard(card.getId())
+    .then(() => {
+      card.delete();
+      popupConfirmDelete.close();
+    })
+    .catch((error) => console.log(error));
 }
 
 const popupConfirmDelete = new PopupConfirm(
@@ -152,7 +150,7 @@ const popupEditProfile = new PopupWithForm(
 popupEditProfile.setEventListeners();
 
 const renderEditProfileInputs = () => {
-  const {bio, name} = userInfo.getUserInfo();
+  const { bio, name } = userInfo.getUserInfo();
   const formData = {
     "profile-name": name,
     "profile-bio": bio,
@@ -164,7 +162,7 @@ const handleAddCardFormSubmit = (formData) => {
   function makeRequest() {
     const name = formData["card-place-name"];
     const link = formData["card-image-link"];
-    return api.addCard(name, link).then(res => {
+    return api.addCard(name, link).then((res) => {
       const cardElement = createCardElement(res);
       cardSection.prependItem(cardElement);
     });
@@ -191,11 +189,11 @@ const handleUpdateAvatarFormSubmit = (formData) => {
   function makeRequest() {
     const link = formData["avatar-link"];
     return api.updateAvatar(link).then((res) => {
-      userInfo.setUserInfo(res)
+      userInfo.setUserInfo(res);
     });
   }
 
-  handleSubmit(makeRequest, popupUpdateAvatar)
+  handleSubmit(makeRequest, popupUpdateAvatar);
 };
 const popupUpdateAvatar = new PopupWithForm(
   ".popup_type_update-avatar",

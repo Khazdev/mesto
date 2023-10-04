@@ -27,8 +27,6 @@ export class Card {
   _setEventListeners() {
     const likeCounter = this._element.querySelector(".elements__like-counter");
     likeCounter.textContent = this._data.likes.length;
-    console.log('this._data.likes.length')
-    console.log(this._data.likes.length)
     this._isLikedByCurrentUser = this._data.likes.find(
       (like) => like._id === this._data.userId,
     );
