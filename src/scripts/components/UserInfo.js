@@ -1,9 +1,8 @@
-import {avatarElement} from "../utils/constants";
-
 export class UserInfo {
-  constructor({ nameSelector, bioSelector }) {
+  constructor({ nameSelector, bioSelector, avatarSelector }) {
     this._name = document.querySelector(nameSelector);
     this._bio = document.querySelector(bioSelector);
+    this._avatar = document.querySelector(avatarSelector);
     this._id = null;
   }
 
@@ -20,6 +19,6 @@ export class UserInfo {
     this._name.textContent = name;
     this._bio.textContent = bio;
     this._id = id;
-    avatarElement.src = avatar;
+    this._avatar.src = avatar;
   }
 }
