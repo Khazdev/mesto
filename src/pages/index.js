@@ -52,12 +52,10 @@ function createCardElement(cardData) {
 }
 
 const cardSection = new Section(
-  {
-    renderer: (cardData) => {
+    (cardData) => {
       const cardElement = createCardElement(cardData);
       cardSection.addItem(cardElement);
     },
-  },
   cardElementsList,
 );
 
