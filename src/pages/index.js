@@ -15,6 +15,7 @@ import { FormValidator } from "../scripts/components/FormValidator.js";
 import "./index.css";
 import { api } from "../scripts/components/Api.js";
 import { PopupConfirm } from "../scripts/components/PopupConfirm.js";
+import { handleSubmit } from "../scripts/utils/utils.js";
 
 const logo = new URL("../images/logo.svg", import.meta.url);
 
@@ -23,6 +24,7 @@ logoElement.src = logo.href;
 const userInfo = new UserInfo({
   nameSelector: ".profile__name",
   bioSelector: ".profile__bio",
+  avatarSelector: ".profile__avatar",
 });
 
 const createCard = (cardData) => {
@@ -50,16 +52,12 @@ function createCardElement(cardData) {
 }
 
 const cardSection = new Section(
-  {
-    items: [],
-    renderer: (cardData) => {
+    (cardData) => {
       const cardElement = createCardElement(cardData);
       cardSection.addItem(cardElement);
     },
-  },
   cardElementsList,
 );
-cardSection.render();
 
 Promise.all([api.getUserInfo(), api.getInitialCards()])
   // тут деструктурируете ответ от сервера, чтобы было понятнее, что пришло
@@ -67,28 +65,11 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
     // тут установка данных пользователя
     userInfo.setUserInfo(userData);
     // и тут отрисовка карточек
-    cards.forEach((cardData) => {
-      const cardElement = createCardElement(cardData);
-      cardSection.addItem(cardElement);
-    });
+    cardSection.renderItems(cards);
   })
   .catch((err) => {
     console.log(err);
   });
-
-function handleSubmit(request, popupInstance, loadingText = "Сохранение...") {
-  popupInstance.renderLoading(true, loadingText);
-  request()
-    .then(() => {
-      popupInstance.close();
-    })
-    .catch((err) => {
-      console.error(`Ошибка: ${err}`);
-    })
-    .finally(() => {
-      popupInstance.renderLoading(false);
-    });
-}
 
 function handleConfirmFormSubmit(card) {
   api
@@ -131,7 +112,6 @@ function unlikeCard(card) {
 const handleEditProfileFormSubmit = (formData) => {
   const profileName = formData["profile-name"];
   const profileBio = formData["profile-bio"];
-  popupEditProfile.renderLoading(true);
 
   function makeRequest() {
     return api.updateProfile(profileName, profileBio).then((res) => {

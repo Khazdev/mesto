@@ -10,19 +10,19 @@ class Api {
   }
 
   getInitialCards() {
-    return this._request("/cards", {
+    return this._request(`/cards`, {
       headers: this.headers,
     });
   }
 
   getUserInfo() {
-    return this._request("/users/me", {
+    return this._request(`/users/me`, {
       headers: this.headers,
     });
   }
 
   updateProfile(name, about) {
-    return this._request("/users/me", {
+    return this._request(`/users/me`, {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
@@ -33,7 +33,7 @@ class Api {
   }
 
   addCard(name, link) {
-    return this._request("/cards", {
+    return this._request(`/cards`, {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify({
@@ -65,7 +65,7 @@ class Api {
   }
 
   updateAvatar(avatarLink) {
-    return this._request("/users/me/avatar", {
+    return this._request(`/users/me/avatar`, {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
